@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\McpLab.Mcp.Conventions\McpLab.Mcp.Conventions.csproj" />
+    <ProjectReference Include="..\McpLab.Finance.Contracts\McpLab.Finance.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

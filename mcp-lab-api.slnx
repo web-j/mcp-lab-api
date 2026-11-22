@@ -1,0 +1,29 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/McpLab.AppHost/McpLab.AppHost.csproj" />
+    <Project Path="src/McpLab.Host/McpLab.Host.csproj" />
+    <Project Path="src/McpLab.ServiceDefaults/McpLab.ServiceDefaults.csproj" />
+  </Folder>
+  <Folder Name="/src/BuildingBlocks/">
+    <Project Path="src/BuildingBlocks/McpLab.Mcp.Conventions/McpLab.Mcp.Conventions.csproj" />
+    <Project Path="src/BuildingBlocks/McpLab.SharedKernel/McpLab.SharedKernel.csproj" />
+  </Folder>
+  <Folder Name="/src/Modules/Finance/">
+    <Project Path="src/Modules/Finance/McpLab.Finance/McpLab.Finance.csproj" />
+    <Project Path="src/Modules/Finance/McpLab.Finance.Contracts/McpLab.Finance.Contracts.csproj" />
+  </Folder>
+  <Folder Name="/src/Modules/Scheduling/">
+    <Project Path="src/Modules/Scheduling/McpLab.Scheduling/McpLab.Scheduling.csproj" />
+    <Project Path="src/Modules/Scheduling/McpLab.Scheduling.Contracts/McpLab.Scheduling.Contracts.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/McpLab.ArchitectureTests/McpLab.ArchitectureTests.csproj" />
+    <Project Path="tests/McpLab.McpContractTests/McpLab.McpContractTests.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="global.json" />
+    <File Path="CLAUDE.md" />
+  </Folder>
+</Solution>
