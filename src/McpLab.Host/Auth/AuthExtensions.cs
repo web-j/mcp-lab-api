@@ -47,7 +47,8 @@ public static class AuthExtensions
                 ResourceName = "Agateo MCP Lab",
                 ResourceDocumentation = options.Documentation?.ToString(),
                 AuthorizationServers = { options.Issuer },
-                ScopesSupported = ["openid", "email"],
+                // offline_access: o cliente recebe refresh token e não desconecta a pessoa quando o token de 1 h expira.
+                ScopesSupported = ["openid", "email", "offline_access"],
             });
 
         builder.Services.AddAuthorizationBuilder()

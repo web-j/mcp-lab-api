@@ -11,12 +11,10 @@ O objetivo é aprender, na prática, como desenhar um servidor MCP e registrar a
 Endereço do servidor: **`https://mcp.agateo.com.br/mcp`**. Na primeira conexão o app abre
 [auth.agateo.com.br](https://auth.agateo.com.br) para você entrar (ou criar conta) e autorizar.
 
-| App | Onde adicionar |
-|---|---|
-| Claude | Configurações → Conectores → Adicionar conector personalizado |
-| ChatGPT | Configurações → Apps → Avançado → Modo desenvolvedor → Criar |
-| Cursor | Settings → MCP → Add new MCP server (HTTP) |
-| Claude Code | `claude mcp add --transport http agateo https://mcp.agateo.com.br/mcp` |
+O passo a passo de cada app (Claude, ChatGPT, Grok, Cursor, Claude Code, VS Code) fica em
+[auth.agateo.com.br/conectar](https://auth.agateo.com.br/conectar), com a versão em Markdown para IAs em
+[/llms.txt](https://auth.agateo.com.br/llms.txt). Os dois arquivos ficam em `src/McpLab.Auth/public/` e
+precisam ser atualizados juntos.
 
 ## Estrutura
 

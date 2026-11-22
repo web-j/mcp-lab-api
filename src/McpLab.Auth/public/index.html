@@ -8,6 +8,7 @@
   <title>MCP Lab · Agateo</title>
   <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32.png">
   <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+  <link rel="alternate" type="text/markdown" href="/llms.txt" title="Instruções em Markdown para IAs">
   <link rel="preload" href="/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/styles.css">
   <script src="/config.js"></script>
@@ -25,6 +26,11 @@
     </div>
   </header>
 
+  <nav class="sections" aria-label="Seções">
+    <a href="/" aria-current="page">Minha conta</a>
+    <a href="/conectar">Como conectar</a>
+  </nav>
+
   <main class="page">
     <section class="intro" aria-labelledby="intro-title">
       <p class="eyebrow">Produto gratuito da Agateo</p>
@@ -40,6 +46,9 @@
 
     <section class="card" id="view" aria-live="polite">
       <p class="muted">Carregando…</p>
+      <!-- Lido por quem não executa JavaScript (inclusive assistentes de IA). -->
+      <p class="muted">Para conectar seu app de IA ao MCP Lab, use o endereço <code>https://mcp.agateo.com.br/mcp</code>.
+        Instruções completas em <a href="/conectar">auth.agateo.com.br/conectar</a> (Markdown em <a href="/llms.txt">/llms.txt</a>).</p>
     </section>
   </main>
 
@@ -127,18 +136,15 @@
   <template id="tpl-account">
     <h1>Sua conta</h1>
     <p>Conectado como <b data-slot="email"></b>.</p>
-    <h2>Como conectar</h2>
-    <p>Adicione o servidor no seu app usando este endereço. Na primeira vez ele abre esta página para você entrar e autorizar.</p>
+    <h2>Conectar no seu app</h2>
+    <p>Adicione este endereço no Claude, ChatGPT, Grok ou Cursor. Na primeira vez o app abre esta página para você autorizar.</p>
     <div class="copy">
       <code data-slot="mcp"></code>
       <button class="secondary" type="button" data-action="copy">Copiar</button>
     </div>
-    <ul class="clients">
-      <li><b>Claude</b> Configurações → Conectores → Adicionar conector personalizado</li>
-      <li><b>ChatGPT</b> Configurações → Apps → Avançado → Modo desenvolvedor → Criar</li>
-      <li><b>Cursor</b> Settings → MCP → Add new MCP server (tipo HTTP)</li>
-      <li><b>Claude Code</b> <code>claude mcp add --transport http agateo <span data-slot="mcp"></span></code></li>
-    </ul>
+    <button class="primary" type="button" data-action="copy-prompt">Copiar texto para a IA</button>
+    <p class="hint">Cole na conversa e a IA conecta para você ou diz onde clicar.</p>
+    <a class="link" href="/conectar">Ver o passo a passo de cada app</a>
     <div class="actions">
       <button class="secondary" type="button" data-action="signout">Sair</button>
     </div>
