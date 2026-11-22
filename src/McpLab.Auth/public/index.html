@@ -4,27 +4,49 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex">
-  <title>Agateo MCP Lab</title>
+  <meta name="theme-color" content="#f5f5f7">
+  <title>MCP Lab · Agateo</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32.png">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+  <link rel="preload" href="/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/styles.css">
   <script src="/config.js"></script>
   <script src="/vendor/supabase.js"></script>
   <script src="/app.js" defer></script>
 </head>
 <body>
-  <main class="shell">
-    <header class="brand">
-      <span class="mark" aria-hidden="true"></span>
-      <span>Agateo <b>MCP Lab</b></span>
-    </header>
+  <header class="nav">
+    <div class="nav__pill">
+      <a class="nav__brand" href="https://agateo.com.br" aria-label="Agateo Tecnologia">
+        <img src="/img/logo-agtt.png" alt="" width="43" height="28">
+        <span class="nav__product">MCP Lab</span>
+      </a>
+      <span class="nav__tag">Grátis</span>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="intro" aria-labelledby="intro-title">
+      <p class="eyebrow">Produto gratuito da Agateo</p>
+      <h1 class="display" id="intro-title">Seu assistente de IA usando ferramentas de verdade.</h1>
+      <p class="lead">O MCP Lab é um servidor MCP aberto. Você cria sua conta, conecta no Claude, no ChatGPT ou no Cursor e usa as ferramentas direto na conversa. Sem custo.</p>
+      <ol class="steps">
+        <li><span class="index">01</span><div><b>Crie sua conta</b><span>Só e-mail e senha.</span></div></li>
+        <li><span class="index">02</span><div><b>Conecte no seu app</b><span>Claude, ChatGPT, Cursor ou Claude Code.</span></div></li>
+        <li><span class="index">03</span><div><b>Peça na conversa</b><span>O assistente usa as ferramentas por você.</span></div></li>
+      </ol>
+      <p class="soon">Em construção: as primeiras ferramentas são de finanças e agenda.</p>
+    </section>
 
     <section class="card" id="view" aria-live="polite">
       <p class="muted">Carregando…</p>
     </section>
-
-    <footer class="foot">
-      <span>Servidor MCP: <code id="mcp-url"></code></span>
-    </footer>
   </main>
+
+  <footer class="foot">
+    <span>Servidor MCP: <code id="mcp-url"></code></span>
+    <span>Feito pela <a href="https://agateo.com.br">Agateo Tecnologia</a> · <a href="https://agateo.com.br/termos">Termos</a> · <a href="https://agateo.com.br/privacidade">Privacidade</a></span>
+  </footer>
 
   <!-- Entrar / criar conta / esqueci a senha -->
   <template id="tpl-auth">
@@ -74,7 +96,7 @@
   <!-- Consentimento OAuth -->
   <template id="tpl-consent">
     <h1><span data-slot="client"></span> quer acessar sua conta</h1>
-    <p>Ao permitir, <b data-slot="client"></b> poderá usar as ferramentas do Agateo MCP Lab em seu nome:
+    <p>Ao permitir, <b data-slot="client"></b> poderá usar as ferramentas do MCP Lab em seu nome:
       ler e alterar os seus dados nos módulos disponíveis.</p>
     <dl class="facts">
       <dt>Conta</dt><dd data-slot="email"></dd>

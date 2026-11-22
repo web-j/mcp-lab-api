@@ -1,4 +1,4 @@
-// Login, cadastro, confirmação de e-mail, nova senha e consentimento OAuth do Agateo MCP Lab.
+// Login, cadastro, confirmação de e-mail, nova senha e consentimento OAuth do MCP Lab, produto gratuito da Agateo.
 // O Supabase Auth é o authorization server; esta página só autentica a pessoa e registra a decisão
 // de consentimento (ADR 0007).
 (() => {
@@ -28,6 +28,7 @@
 
   function render(templateId) {
     const node = document.getElementById(templateId).content.cloneNode(true);
+    document.body.dataset.view = templateId.replace("tpl-", "");
     view.replaceChildren(node);
     return view;
   }
@@ -88,7 +89,7 @@
 
     if (authorizationId) {
       const ctx = root.querySelector('[data-slot="context"]');
-      ctx.textContent = "Entre ou crie sua conta para conectar o app ao Agateo MCP Lab.";
+      ctx.textContent = "Entre ou crie sua conta para conectar o app ao MCP Lab.";
       ctx.hidden = false;
     }
 
