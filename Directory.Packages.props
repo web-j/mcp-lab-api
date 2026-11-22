@@ -18,6 +18,9 @@
     <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.18.0" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.18.0" />
   </ItemGroup>
+  <ItemGroup Label="Auth">
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="11.0.0" />
+  </ItemGroup>
   <ItemGroup Label="MCP">
     <PackageVersion Include="ModelContextProtocol" Version="2.4.0" />
     <PackageVersion Include="ModelContextProtocol.AspNetCore" Version="2.4.0" />

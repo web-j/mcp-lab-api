@@ -9,9 +9,9 @@ O servidor precisa ser acessado remotamente por clientes diferentes e, depois, c
 
 ## Decisão
 
-Streamable HTTP em `/mcp` com `ModelContextProtocol.AspNetCore`. Autenticação OAuth 2.1 (o servidor como resource server, com Protected Resource Metadata) entra na fase 3. Stdio não é suportado por enquanto.
+Streamable HTTP em `/mcp` com `ModelContextProtocol.AspNetCore`. Autenticação OAuth 2.1, com o servidor como resource server (detalhes no ADR 0007). Stdio não é suportado por enquanto.
 
 ## Consequências
 
 - O SDK 2.4 usa modo stateless por padrão, o que facilita escalar horizontalmente. Elicitation e sampling exigem sessão; a fase 3 decide se o modo com sessão será ligado.
-- Em desenvolvimento não há autenticação.
+- Em desenvolvimento a autenticação também é obrigatória: os clientes fazem o mesmo fluxo OAuth contra o Supabase do lab.
