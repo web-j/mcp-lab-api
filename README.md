@@ -6,20 +6,34 @@ Ensaio de uma API **AI native** em .NET 11: monolito modular com PostgreSQL cuja
 O objetivo é aprender, na prática, como desenhar um servidor MCP e registrar as boas práticas em
 [`docs/mcp-guidelines.md`](docs/mcp-guidelines.md).
 
+## Conectar
+
+Endereço do servidor: **`https://mcp.agateo.com.br/mcp`**. Na primeira conexão o app abre
+[auth.agateo.com.br](https://auth.agateo.com.br) para você entrar (ou criar conta) e autorizar.
+
+| App | Onde adicionar |
+|---|---|
+| Claude | Configurações → Conectores → Adicionar conector personalizado |
+| ChatGPT | Configurações → Apps → Avançado → Modo desenvolvedor → Criar |
+| Cursor | Settings → MCP → Add new MCP server (HTTP) |
+| Claude Code | `claude mcp add --transport http agateo https://mcp.agateo.com.br/mcp` |
+
 ## Estrutura
 
 ```
 src/
   McpLab.AppHost/          Aspire: Postgres + host + MCP Inspector
   McpLab.ServiceDefaults/  OpenTelemetry, health checks, resiliência
-  McpLab.Host/             servidor MCP (Streamable HTTP em /mcp)
+  McpLab.Host/             servidor MCP (Streamable HTTP em /mcp, OAuth 2.1 como resource server)
+  McpLab.Auth/             página de login e consentimento (auth.agateo.com.br)
   BuildingBlocks/          SharedKernel e convenções MCP (IModule, nomes de tools)
   Modules/                 Finance, Scheduling, ... (cada um com seu projeto .Contracts)
 tests/
   McpLab.ArchitectureTests/  fronteiras entre módulos
   McpLab.McpContractTests/   cliente MCP real garantindo as convenções das tools
+deploy/prod/               compose, vhosts nginx e scripts da VPS
 docs/
-  architecture.md, mcp-guidelines.md, adr/
+  architecture.md, mcp-guidelines.md, deploy.md, adr/
 ```
 
 ## Rodando
@@ -31,8 +45,8 @@ dotnet test
 dotnet run --project src/McpLab.AppHost
 ```
 
-O servidor MCP fica em `http://localhost:5180/mcp`. Para conectar o Claude Code, o `.mcp.json` da raiz já aponta para ele.
-Para testar à mão, abra o MCP Inspector pelo painel do Aspire.
+Localmente o servidor fica em `http://localhost:5180/mcp` e a página de login em `http://localhost:5190`.
+O login é o mesmo de produção (Supabase do lab). Para testar à mão, abra o MCP Inspector pelo painel do Aspire.
 
 ## Roteiro
 
@@ -41,7 +55,8 @@ Para testar à mão, abra o MCP Inspector pelo painel do Aspire.
 | 0 | Solution, Aspire, Postgres, host MCP, testes de contrato e arquitetura, ADRs | feito |
 | 1 | Módulo Finanças (contas, categorias, lançamentos) | |
 | 2 | Módulo Agendamento, primeiro evento entre módulos, resources e prompts | |
-| 3 | OAuth 2.1, escopos por módulo, auditoria, idempotência, elicitation | |
+| 0.5 | OAuth 2.1 com Supabase, página de login, proteções de borda, deploy na VPS | feito |
+| 3 | Auditoria, idempotência, elicitation, apps conectados, captcha | |
 | 4 | Evals com agente real e versão 1 do `mcp-guidelines.md` | |
 
 ## Licença

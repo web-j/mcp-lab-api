@@ -44,7 +44,14 @@
 14. **Resources** para dados que o cliente anexa ao contexto (`finance://accounts`).
 15. **Prompts** para fluxos de várias etapas (`monthly_close`).
 
+## Identidade
+
+16. **Toda tool trabalha em nome de quem está conectado.** Use `ICurrentUser`; nunca receba o ID do usuário como
+    parâmetro da tool. Todo dado é filtrado por `ICurrentUser.Id`.
+17. **Permissão no nosso código.** O Supabase não emite escopos por módulo (ADR 0007), então regras como
+    "só leitura" ou "módulo bloqueado" ficam no host/módulo.
+
 ## Idioma
 
-16. Descrições, títulos e mensagens em português do Brasil, porque é o idioma de quem conversa com o agente.
+18. Descrições, títulos e mensagens em português do Brasil, porque é o idioma de quem conversa com o agente.
     Hipótese a validar nos evals da fase 4.

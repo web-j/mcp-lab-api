@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Agateo MCP Lab</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/config.js"></script>
+  <script src="/vendor/supabase.js"></script>
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <main class="shell">
+    <header class="brand">
+      <span class="mark" aria-hidden="true"></span>
+      <span>Agateo <b>MCP Lab</b></span>
+    </header>
+
+    <section class="card" id="view" aria-live="polite">
+      <p class="muted">Carregando…</p>
+    </section>
+
+    <footer class="foot">
+      <span>Servidor MCP: <code id="mcp-url"></code></span>
+    </footer>
+  </main>
+
+  <!-- Entrar / criar conta / esqueci a senha -->
+  <template id="tpl-auth">
+    <div class="context" data-slot="context" hidden></div>
+    <div class="tabs" role="tablist">
+      <button type="button" role="tab" data-tab="signin">Entrar</button>
+      <button type="button" role="tab" data-tab="signup">Criar conta</button>
+    </div>
+
+    <form data-form="signin" novalidate>
+      <label for="signin-email">E-mail</label>
+      <input id="signin-email" name="email" type="email" autocomplete="email" required>
+      <label for="signin-password">Senha</label>
+      <input id="signin-password" name="password" type="password" autocomplete="current-password" required>
+      <p class="error" data-slot="error" hidden></p>
+      <button class="primary" type="submit">Entrar</button>
+      <button class="link" type="button" data-action="forgot">Esqueci minha senha</button>
+    </form>
+
+    <form data-form="signup" novalidate hidden>
+      <label for="signup-email">E-mail</label>
+      <input id="signup-email" name="email" type="email" autocomplete="email" required>
+      <label for="signup-password">Senha</label>
+      <input id="signup-password" name="password" type="password" autocomplete="new-password" minlength="10" required>
+      <p class="hint">Pelo menos 10 caracteres, com letra minúscula, maiúscula e número.</p>
+      <p class="error" data-slot="error" hidden></p>
+      <button class="primary" type="submit">Criar conta</button>
+    </form>
+
+    <form data-form="forgot" novalidate hidden>
+      <p>Informe seu e-mail. Enviaremos um link para escolher uma nova senha.</p>
+      <label for="forgot-email">E-mail</label>
+      <input id="forgot-email" name="email" type="email" autocomplete="email" required>
+      <p class="error" data-slot="error" hidden></p>
+      <button class="primary" type="submit">Enviar link</button>
+      <button class="link" type="button" data-action="back">Voltar para entrar</button>
+    </form>
+  </template>
+
+  <!-- Mensagem simples -->
+  <template id="tpl-message">
+    <h1 data-slot="title"></h1>
+    <p data-slot="body"></p>
+    <div class="actions" data-slot="actions"></div>
+  </template>
+
+  <!-- Consentimento OAuth -->
+  <template id="tpl-consent">
+    <h1><span data-slot="client"></span> quer acessar sua conta</h1>
+    <p>Ao permitir, <b data-slot="client"></b> poderá usar as ferramentas do Agateo MCP Lab em seu nome:
+      ler e alterar os seus dados nos módulos disponíveis.</p>
+    <dl class="facts">
+      <dt>Conta</dt><dd data-slot="email"></dd>
+      <dt>Retorno para</dt><dd><code data-slot="redirect"></code></dd>
+      <dt>Permissões</dt><dd data-slot="scopes"></dd>
+    </dl>
+    <p class="error" data-slot="error" hidden></p>
+    <div class="actions">
+      <button class="primary" type="button" data-action="approve">Permitir</button>
+      <button class="secondary" type="button" data-action="deny">Recusar</button>
+    </div>
+    <button class="link" type="button" data-action="switch">Não é você? Entrar com outra conta</button>
+  </template>
+
+  <!-- Nova senha -->
+  <template id="tpl-reset">
+    <h1>Escolha uma nova senha</h1>
+    <form data-form="reset" novalidate>
+      <label for="reset-password">Nova senha</label>
+      <input id="reset-password" name="password" type="password" autocomplete="new-password" minlength="10" required>
+      <p class="hint">Pelo menos 10 caracteres, com letra minúscula, maiúscula e número.</p>
+      <p class="error" data-slot="error" hidden></p>
+      <button class="primary" type="submit">Salvar senha</button>
+    </form>
+  </template>
+
+  <!-- Conta logada + como conectar -->
+  <template id="tpl-account">
+    <h1>Sua conta</h1>
+    <p>Conectado como <b data-slot="email"></b>.</p>
+    <h2>Como conectar</h2>
+    <p>Adicione o servidor no seu app usando este endereço. Na primeira vez ele abre esta página para você entrar e autorizar.</p>
+    <div class="copy">
+      <code data-slot="mcp"></code>
+      <button class="secondary" type="button" data-action="copy">Copiar</button>
+    </div>
+    <ul class="clients">
+      <li><b>Claude</b> Configurações → Conectores → Adicionar conector personalizado</li>
+      <li><b>ChatGPT</b> Configurações → Apps → Avançado → Modo desenvolvedor → Criar</li>
+      <li><b>Cursor</b> Settings → MCP → Add new MCP server (tipo HTTP)</li>
+      <li><b>Claude Code</b> <code>claude mcp add --transport http agateo <span data-slot="mcp"></span></code></li>
+    </ul>
+    <div class="actions">
+      <button class="secondary" type="button" data-action="signout">Sair</button>
+    </div>
+  </template>
+</body>
+</html>

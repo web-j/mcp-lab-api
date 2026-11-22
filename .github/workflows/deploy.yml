@@ -1,0 +1,107 @@
+name: Deploy
+
+# Push na main sobe produção (ADR 0009). Imagens são geradas em runner do GitHub e o deploy entra na VPS
+# por SSH com uma chave só de deploy. Repositório público: nada de runner self-hosted.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+      - run: dotnet build -c Release
+      - run: dotnet test --no-build -c Release
+
+  images:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Imagem do host MCP (SDK container, sem Dockerfile)
+        run: >
+          dotnet publish src/McpLab.Host -c Release -t:PublishContainer
+          -p:ContainerRegistry=ghcr.io
+          -p:ContainerImageTags='"prod;${{ github.sha }}"'
+          -p:SourceRevisionId=${{ github.sha }}
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Imagem da página de login
+        uses: docker/build-push-action@v6
+        with:
+          context: src/McpLab.Auth
+          push: true
+          tags: |
+            ghcr.io/web-j/mcp-lab-auth:prod
+            ghcr.io/web-j/mcp-lab-auth:${{ github.sha }}
+
+  deploy:
+    needs: images
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://auth.agateo.com.br
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Chave SSH de deploy
+        run: |
+          install -m 700 -d ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy
+          chmod 600 ~/.ssh/deploy
+          echo "${{ secrets.VPS_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+
+      - name: Copia compose, vhosts e scripts
+        run: |
+          ssh -i ~/.ssh/deploy deploy@${{ vars.VPS_HOST }} 'mkdir -p /opt/agateo/mcp-lab'
+          rsync -az --delete --exclude '.env' -e "ssh -i ~/.ssh/deploy" deploy/prod/ deploy@${{ vars.VPS_HOST }}:/opt/agateo/mcp-lab/
+
+      - name: Grava o .env
+        env:
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          SUPABASE_URL: ${{ vars.SUPABASE_URL }}
+          SUPABASE_PUBLISHABLE_KEY: ${{ vars.SUPABASE_PUBLISHABLE_KEY }}
+        run: |
+          printf 'POSTGRES_PASSWORD=%s\nSUPABASE_URL=%s\nSUPABASE_PUBLISHABLE_KEY=%s\nIMAGE_TAG=prod\n' \
+            "$POSTGRES_PASSWORD" "$SUPABASE_URL" "$SUPABASE_PUBLISHABLE_KEY" \
+          | ssh -i ~/.ssh/deploy deploy@${{ vars.VPS_HOST }} 'umask 077 && cat > /opt/agateo/mcp-lab/.env'
+
+      - name: Sobe o stack
+        run: >
+          ssh -i ~/.ssh/deploy deploy@${{ vars.VPS_HOST }}
+          'cd /opt/agateo/mcp-lab && sh scripts/deploy.sh ${{ github.sha }} ${{ vars.LETSENCRYPT_EMAIL }}'
+
+      - name: Smoke test público
+        run: |
+          curl -sf https://mcp.agateo.com.br/health
+          curl -sf https://mcp.agateo.com.br/.well-known/oauth-protected-resource/mcp | grep -q authorization_servers
+          test "$(curl -s -o /dev/null -w '%{http_code}' -X POST https://mcp.agateo.com.br/mcp)" = "401"
+          curl -sf https://auth.agateo.com.br/health

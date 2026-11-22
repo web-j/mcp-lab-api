@@ -1,0 +1,67 @@
+# mcp-lab em produção: /opt/agateo/mcp-lab na VPS (ADR 0009).
+# A borda TLS é o nginx compartilhado (container waha-nginx, rede Docker "waha", portas 80/443).
+# Este compose não publica portas no host.
+
+name: mcp-lab
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: mcp-lab-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: mcplab
+      POSTGRES_USER: mcplab
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?defina POSTGRES_PASSWORD no .env}
+    volumes:
+      - mcp_lab_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mcplab -d mcplab"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - mcplab
+
+  api:
+    image: ghcr.io/web-j/mcp-lab-api:${IMAGE_TAG:-prod}
+    container_name: mcp-lab-api
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_HTTP_PORTS: "8080"
+      ConnectionStrings__mcplab: "Host=postgres;Port=5432;Database=mcplab;Username=mcplab;Password=${POSTGRES_PASSWORD}"
+      Auth__Issuer: ${SUPABASE_URL}/auth/v1
+      Auth__Resource: https://mcp.agateo.com.br/mcp
+      Auth__Documentation: https://auth.agateo.com.br
+    depends_on:
+      postgres:
+        condition: service_healthy
+    expose:
+      - "8080"
+    networks:
+      - mcplab
+      - waha
+
+  auth:
+    image: ghcr.io/web-j/mcp-lab-auth:${IMAGE_TAG:-prod}
+    container_name: mcp-lab-auth
+    restart: unless-stopped
+    environment:
+      SUPABASE_URL: ${SUPABASE_URL}
+      SUPABASE_PUBLISHABLE_KEY: ${SUPABASE_PUBLISHABLE_KEY}
+      MCP_URL: https://mcp.agateo.com.br/mcp
+    expose:
+      - "80"
+    networks:
+      - waha
+
+volumes:
+  mcp_lab_pg_data:
+
+networks:
+  mcplab:
+    driver: bridge
+  waha:
+    external: true
+    name: waha

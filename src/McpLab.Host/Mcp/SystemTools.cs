@@ -1,11 +1,12 @@
 using System.ComponentModel;
+using McpLab.Mcp.Conventions.Identity;
 using McpLab.Mcp.Conventions.Modules;
 using ModelContextProtocol.Server;
 
 namespace McpLab.Host.Mcp;
 
 [McpServerToolType]
-public sealed class SystemTools(IEnumerable<IModule> modules, IHostEnvironment environment, TimeProvider time)
+public sealed class SystemTools(IEnumerable<IModule> modules, IHostEnvironment environment, TimeProvider time, ICurrentUser currentUser)
 {
     [McpServerTool(
         Name = "system_get_status",
@@ -26,7 +27,27 @@ public sealed class SystemTools(IEnumerable<IModule> modules, IHostEnvironment e
         Environment: environment.EnvironmentName,
         UtcNow: time.GetUtcNow(),
         Modules: [.. modules.Select(m => new ModuleInfo(m.Name, m.Description))]);
+
+    [McpServerTool(
+        Name = "system_get_current_user",
+        Title = "Conta conectada",
+        ReadOnly = true,
+        Destructive = false,
+        Idempotent = true,
+        OpenWorld = false,
+        UseStructuredContent = true)]
+    [Description("""
+        Mostra qual conta Agateo está conectada nesta conversa (ID e e-mail) e por qual app (cliente OAuth).
+        Use quando o usuário perguntar com que conta está logado ou para confirmar de quem são os dados
+        antes de uma operação. Não altera nada.
+        """)]
+    public CurrentUserInfo GetCurrentUser() => new(currentUser.Id, currentUser.Email, currentUser.ClientId);
 }
+
+public sealed record CurrentUserInfo(
+    Guid UserId,
+    string? Email,
+    [property: Description("ID do app (cliente OAuth) que está conectado, ex.: ChatGPT ou Claude")] string ClientId);
 
 public sealed record ServerStatus(
     string Server,

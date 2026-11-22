@@ -1,0 +1,198 @@
+:root {
+  --bg: #eef3f2;
+  --surface: #ffffff;
+  --fg: #14201e;
+  --muted: #5a6764;
+  --line: #ccd8d5;
+  --accent: #0e6b66;
+  --accent-fg: #ffffff;
+  --accent-soft: #d8ecea;
+  --danger: #b3261e;
+  --focus: #0e6b66;
+  --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f1615;
+    --surface: #18211f;
+    --fg: #e3ebe9;
+    --muted: #98a7a3;
+    --line: #2d3b38;
+    --accent: #4fc2b8;
+    --accent-fg: #0b1a18;
+    --accent-soft: #173431;
+    --danger: #f28b82;
+    --focus: #4fc2b8;
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--fg);
+  font: 15px/1.55 var(--font);
+}
+
+.shell {
+  max-width: 440px;
+  margin: 0 auto;
+  padding: 48px 16px 32px;
+  display: grid;
+  gap: 20px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 17px;
+  letter-spacing: .01em;
+}
+
+.mark {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: conic-gradient(from 210deg, var(--accent), var(--accent-soft), var(--accent));
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 24px;
+  display: grid;
+  gap: 14px;
+}
+
+h1 { font-size: 21px; line-height: 1.25; margin: 0; text-wrap: balance; }
+h2 { font-size: 15px; margin: 8px 0 0; }
+p { margin: 0; }
+code { font-family: var(--mono); font-size: .88em; word-break: break-all; }
+
+.muted, .hint { color: var(--muted); }
+.hint { font-size: 13px; margin-top: -6px; }
+
+.context {
+  background: var(--accent-soft);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+}
+
+.tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 3px;
+  gap: 3px;
+}
+
+.tabs button {
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  padding: 8px;
+  border-radius: 6px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.tabs button[aria-selected="true"] {
+  background: var(--accent-soft);
+  color: var(--fg);
+  font-weight: 600;
+}
+
+form { display: grid; gap: 10px; }
+
+label { font-size: 13px; font-weight: 600; }
+
+input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--fg);
+  font: inherit;
+}
+
+input:focus-visible, button:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+button { font: inherit; cursor: pointer; }
+button[disabled] { opacity: .6; cursor: progress; }
+
+.primary, .secondary {
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.primary { background: var(--accent); color: var(--accent-fg); border: 1px solid var(--accent); }
+.secondary { background: transparent; color: var(--fg); border: 1px solid var(--line); }
+
+.link {
+  background: none;
+  border: 0;
+  padding: 2px 0;
+  color: var(--accent);
+  justify-self: start;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.actions > * { flex: 1 1 140px; }
+
+.error {
+  color: var(--danger);
+  font-size: 14px;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 6px 14px;
+  margin: 0;
+  font-size: 14px;
+}
+
+.facts dt { color: var(--muted); }
+.facts dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+
+.copy {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 8px 8px 12px;
+}
+
+.copy code { flex: 1; min-width: 0; }
+.copy button { flex: none; padding: 6px 10px; }
+
+.clients {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.clients b { display: inline-block; min-width: 92px; }
+
+.foot { color: var(--muted); font-size: 12.5px; text-align: center; }
