@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Npgsql" />
+    <PackageReference Include="ModelContextProtocol.AspNetCore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\McpLab.ServiceDefaults\McpLab.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\BuildingBlocks\McpLab.Mcp.Conventions\McpLab.Mcp.Conventions.csproj" />
+    <ProjectReference Include="..\Modules\Finance\McpLab.Finance\McpLab.Finance.csproj" />
+    <ProjectReference Include="..\Modules\Scheduling\McpLab.Scheduling\McpLab.Scheduling.csproj" />
+  </ItemGroup>
+
+</Project>

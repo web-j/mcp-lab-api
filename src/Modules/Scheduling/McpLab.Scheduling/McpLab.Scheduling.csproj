@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\McpLab.Mcp.Conventions\McpLab.Mcp.Conventions.csproj" />
+    <ProjectReference Include="..\McpLab.Scheduling.Contracts\McpLab.Scheduling.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>
