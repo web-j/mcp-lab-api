@@ -6,9 +6,20 @@ O resultado do ensaio é o `docs/mcp-guidelines.md`.
 
 ## Antes de mudar qualquer coisa
 
-1. Ler `docs/architecture.md`, `docs/mcp-guidelines.md` e os ADRs em `docs/adr/`.
+1. Ler as specs em `openspec/specs/`, o change ativo em `openspec/changes/` e os docs (`docs/architecture.md`, `docs/mcp-guidelines.md`, `docs/adr/`).
 2. Uma decisão nova de arquitetura ou de padrão de tool vira um ADR novo (próximo número, mesmo formato).
 3. Quando um padrão mudar, atualizar `docs/mcp-guidelines.md` e o teste que garante esse padrão no mesmo PR.
+
+## OpenSpec (no próprio repositório)
+
+Toda funcionalidade nova passa pelo OpenSpec em `openspec/`, no mesmo repo do código (não há repo de planos separado):
+
+- `/opsx:propose` cria o change em `openspec/changes/<nome>/` (proposal, specs delta, design, tasks), ligado a uma issue de `web-j/mcp-lab-api`.
+- `/opsx:apply` implementa; `/opsx:update` e `/opsx:sync` mantêm os artefatos em dia com o que foi feito.
+- `/opsx:archive` ao concluir: funde os deltas em `openspec/specs/` e move o change para `openspec/changes/archive/`.
+- Regras dos artefatos em `openspec/config.yaml`. Specs em pt-BR, com os títulos estruturais e SHALL/MUST em inglês e cenários GIVEN/WHEN/THEN.
+- Capabilities atuais: `mcp-platform` (servidor, auth, convenções) e `auth-portal` (página de login e instruções). Cada módulo ganha a sua.
+- `openspec validate <change> --strict` antes do PR.
 
 ## Regras
 

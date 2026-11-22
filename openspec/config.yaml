@@ -1,0 +1,39 @@
+schema: spec-driven
+
+context: |
+  Language: pt-BR
+  All artifacts must be written in pt-BR.
+  Keep OpenSpec structural headings and SHALL/MUST keywords in English.
+
+  mcp-lab-api: ensaio de uma API .NET 11 sem front-end e sem REST, exposta somente via MCP
+  (Streamable HTTP em https://mcp.agateo.com.br/mcp, OAuth 2.1 com o Supabase do lab).
+  Monolito modular: host (src/McpLab.Host), building blocks, módulos em src/Modules/<Modulo>
+  (cada um com projeto .Contracts) e a página de login/consentimento (src/McpLab.Auth).
+  O OpenSpec mora no mesmo repositório do código. Decisões de arquitetura continuam em docs/adr/;
+  padrões de tools em docs/mcp-guidelines.md. Specs descrevem comportamento observável pelo agente
+  (tools, resources, prompts, autorização), não detalhes internos.
+
+rules:
+  proposal:
+    - Ligar o change à issue do GitHub em web-j/mcp-lab-api (número e link)
+    - Dizer quais capabilities muda (mcp-platform, auth-portal ou módulos) e quais módulos/projetos toca
+    - Listar as tools, resources e prompts novos ou alterados, com nome no padrão modulo_verbo_objeto
+    - Dizer o custo em tokens que a mudança acrescenta para o agente (descrições, respostas) e como fica limitado
+    - Descrever os testes de contrato MCP, de arquitetura e de integração que a mudança precisa
+    - Dizer se precisa de ADR novo
+  specs:
+    - Usar formato GIVEN/WHEN/THEN em cenários
+    - Escrever deltas (ADDED/MODIFIED/REMOVED), nunca reescrever spec inteira
+    - Cenários do ponto de vista do agente/usuário (o que a tool recebe e devolve), não da implementação
+  design:
+    - Registrar alternativas descartadas e o motivo
+    - Mostrar o modelo de dados (schema Postgres do módulo) quando houver
+  tasks:
+    - Agrupar por entrega; cada entrega termina com PR verde, merge e deploy
+    - Critério de pronto com os testes
+
+operations:
+  archive:
+    guidance:
+      - Atualizar docs/mcp-guidelines.md com os padrões descobertos e o teste que os garante
+      - Atualizar docs/architecture.md quando a arquitetura mudou

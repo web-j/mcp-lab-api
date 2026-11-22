@@ -30,6 +30,7 @@ tests/
   McpLab.ArchitectureTests/  fronteiras entre módulos
   McpLab.McpContractTests/   cliente MCP real garantindo as convenções das tools
 deploy/prod/               compose, vhosts nginx e scripts da VPS
+openspec/                  specs (comportamento) e changes (planos em andamento)
 docs/
   architecture.md, mcp-guidelines.md, deploy.md, adr/
 ```
@@ -54,6 +55,7 @@ O login é o mesmo de produção (Supabase do lab). Para testar à mão, abra o 
 | 1 | Módulo Finanças (contas, categorias, lançamentos) | |
 | 2 | Módulo Agendamento, primeiro evento entre módulos, resources e prompts | |
 | 0.5 | OAuth 2.1 com Supabase, página de login, proteções de borda, deploy na VPS | feito |
+| 1a | Contexto portátil entre IAs (`openspec/changes/contexto-portatil`, issue #5) | planejado |
 | 3 | Auditoria, idempotência, elicitation, apps conectados, captcha | |
 | 4 | Evals com agente real e versão 1 do `mcp-guidelines.md` | |
 
