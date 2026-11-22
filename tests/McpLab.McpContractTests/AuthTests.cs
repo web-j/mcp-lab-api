@@ -34,6 +34,8 @@ public sealed class AuthTests(McpServerFixture server) : IClassFixture<McpServer
 
         Assert.Equal("http://localhost/mcp", metadata.GetProperty("resource").GetString());
         Assert.Equal([TestTokens.Issuer], metadata.GetProperty("authorization_servers").EnumerateArray().Select(e => e.GetString()));
+        // Sem offline_access o ChatGPT e o Claude não recebem refresh token e desconectam a pessoa a cada hora.
+        Assert.Contains("offline_access", metadata.GetProperty("scopes_supported").EnumerateArray().Select(e => e.GetString()));
     }
 
     [Fact]

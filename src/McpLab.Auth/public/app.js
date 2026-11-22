@@ -13,6 +13,8 @@
   document.getElementById("mcp-url").textContent = config.mcpUrl;
 
   const CONSENT_PATH = "/oauth/consent";
+  // Mesmo texto do bloco "Peça para a sua IA conectar" em /conectar.
+  const AI_PROMPT = "Quero usar o MCP Lab da Agateo aqui. Leia as instruções em https://auth.agateo.com.br/llms.txt e conecte o servidor MCP https://mcp.agateo.com.br/mcp para mim. Se você não conseguir adicionar o conector sozinho, me diga exatamente onde clicar neste app.";
   const ERRORS = {
     invalid_credentials: "E-mail ou senha incorretos.",
     email_not_confirmed: "Confirme seu e-mail antes de entrar. Procure o link na sua caixa de entrada.",
@@ -246,6 +248,15 @@
         e.currentTarget.textContent = "Copiado";
       } catch {
         getSelection().selectAllChildren(root.querySelector(".copy code"));
+      }
+    });
+    root.querySelector('[data-action="copy-prompt"]').addEventListener("click", async (e) => {
+      const button = e.currentTarget;
+      try {
+        await navigator.clipboard.writeText(AI_PROMPT);
+        button.textContent = "Copiado. Agora cole na conversa";
+      } catch {
+        location.assign("/conectar");
       }
     });
     root.querySelector('[data-action="signout"]').addEventListener("click", async () => {

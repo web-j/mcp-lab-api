@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f5f7">
+  <meta name="description" content="Como conectar o MCP Lab da Agateo no Claude, ChatGPT, Grok, Cursor e outros apps compatíveis com MCP. Endereço: https://mcp.agateo.com.br/mcp">
+  <title>Como conectar · MCP Lab · Agateo</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32.png">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+  <link rel="alternate" type="text/markdown" href="/llms.txt" title="Instruções em Markdown para IAs">
+  <link rel="preload" href="/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/conectar.js" defer></script>
+</head>
+<!-- Página estática (sem JavaScript obrigatório) para pessoas e para assistentes de IA lerem.
+     O mesmo conteúdo em Markdown fica em /llms.txt; mantenha os dois iguais. -->
+<body data-view="connect">
+  <header class="nav">
+    <div class="nav__pill">
+      <a class="nav__brand" href="https://agateo.com.br" aria-label="Agateo Tecnologia">
+        <img src="/img/logo-agtt.png" alt="" width="43" height="28">
+        <span class="nav__product">MCP Lab</span>
+      </a>
+      <span class="nav__tag">Grátis</span>
+    </div>
+  </header>
+
+  <nav class="sections" aria-label="Seções">
+    <a href="/">Minha conta</a>
+    <a href="/conectar" aria-current="page">Como conectar</a>
+  </nav>
+
+  <main class="doc">
+    <header class="doc__head">
+      <p class="eyebrow">Instruções</p>
+      <h1 class="display">Como conectar o MCP Lab</h1>
+      <p class="lead">Use o endereço abaixo no app de IA que você já usa. Na primeira conexão ele abre a página do MCP Lab para você entrar (ou criar a conta) e autorizar.</p>
+      <div class="copy copy--lg">
+        <code id="mcp-endpoint">https://mcp.agateo.com.br/mcp</code>
+        <button class="secondary" type="button" data-copy="https://mcp.agateo.com.br/mcp" hidden>Copiar</button>
+      </div>
+
+      <div class="ai-prompt">
+        <div class="ai-prompt__head">
+          <b>Peça para a sua IA conectar</b>
+          <span>Copie e cole na conversa do Claude, ChatGPT, Grok ou Cursor. Ela lê as instruções e faz a conexão ou diz onde clicar.</span>
+        </div>
+        <blockquote id="ai-prompt-text">Quero usar o MCP Lab da Agateo aqui. Leia as instruções em https://auth.agateo.com.br/llms.txt e conecte o servidor MCP https://mcp.agateo.com.br/mcp para mim. Se você não conseguir adicionar o conector sozinho, me diga exatamente onde clicar neste app.</blockquote>
+        <button class="primary" type="button" data-copy-from="ai-prompt-text" hidden>Copiar texto para a IA</button>
+      </div>
+    </header>
+
+    <section class="doc__section" aria-labelledby="primeira">
+      <h2 id="primeira">Primeira conexão</h2>
+      <ol class="steps steps--doc">
+        <li><span class="index">01</span><div><b>Adicione o endereço no seu app</b><span>Veja abaixo onde fica a opção em cada um.</span></div></li>
+        <li><span class="index">02</span><div><b>Entre ou crie sua conta</b><span>O app abre auth.agateo.com.br. Na conta nova, confirme o e-mail pelo link que chega na sua caixa de entrada, abrindo no mesmo navegador.</span></div></li>
+        <li><span class="index">03</span><div><b>Clique em Permitir</b><span>A tela mostra qual app está pedindo acesso. Depois disso você volta para o app, já conectado.</span></div></li>
+        <li><span class="index">04</span><div><b>Peça na conversa</b><span>Por exemplo: “com que conta estou conectado no MCP Lab?”.</span></div></li>
+      </ol>
+    </section>
+
+    <section class="doc__section" aria-labelledby="apps">
+      <h2 id="apps">Onde adicionar em cada app</h2>
+      <p class="muted">Os menus mudam com frequência. Se não achar, procure por “conector”, “MCP” ou “app personalizado” nas configurações.</p>
+      <dl class="apps">
+        <dt>Claude <span>(claude.ai e app desktop)</span></dt>
+        <dd>Configurações → Conectores → Adicionar conector personalizado → cole o endereço.</dd>
+
+        <dt>ChatGPT</dt>
+        <dd>Abra <code>chatgpt.com/plugins</code> → Add → Create MCP App → cole o endereço e escolha autenticação OAuth. A disponibilidade depende do plano.</dd>
+
+        <dt>Grok</dt>
+        <dd>Abra <code>grok.com/connectors</code> → New Connector → Custom → cole o endereço e faça o login quando pedir.</dd>
+
+        <dt>Cursor</dt>
+        <dd>Settings → MCP → Add new MCP server (tipo HTTP), ou no arquivo <code>~/.cursor/mcp.json</code>:
+          <pre><code>{
+  "mcpServers": {
+    "agateo": { "url": "https://mcp.agateo.com.br/mcp" }
+  }
+}</code></pre>
+        </dd>
+
+        <dt>Claude Code</dt>
+        <dd><pre><code>claude mcp add --transport http agateo https://mcp.agateo.com.br/mcp</code></pre>Depois rode <code>/mcp</code> dentro do Claude Code e escolha <b>agateo</b> para fazer o login.</dd>
+
+        <dt>VS Code (Copilot)</dt>
+        <dd>No arquivo <code>.vscode/mcp.json</code>:
+          <pre><code>{
+  "servers": {
+    "agateo": { "type": "http", "url": "https://mcp.agateo.com.br/mcp" }
+  }
+}</code></pre>
+        </dd>
+
+        <dt>Outros apps</dt>
+        <dd>Qualquer app compatível com servidores MCP remotos (Streamable HTTP + OAuth) funciona com o mesmo endereço.</dd>
+      </dl>
+    </section>
+
+    <section class="doc__section" aria-labelledby="ia">
+      <h2 id="ia">Para assistentes de IA e agentes</h2>
+      <p>Se você é uma IA configurando esta conexão para alguém, use estes dados:</p>
+      <dl class="facts facts--doc">
+        <dt>Endpoint MCP</dt><dd><code>https://mcp.agateo.com.br/mcp</code></dd>
+        <dt>Transporte</dt><dd>Streamable HTTP (POST JSON-RPC; servidor sem sessão)</dd>
+        <dt>Autenticação</dt><dd>OAuth 2.1 com PKCE. Sem token, o servidor responde 401 com <code>WWW-Authenticate: Bearer resource_metadata=…</code></dd>
+        <dt>Metadados do recurso</dt><dd><code>https://mcp.agateo.com.br/.well-known/oauth-protected-resource/mcp</code></dd>
+        <dt>Authorization server</dt><dd><code>https://eowxffcgonmbbsohedox.supabase.co/auth/v1</code></dd>
+        <dt>Registro de cliente</dt><dd>Dinâmico (RFC 7591), sem client secret</dd>
+        <dt>Escopos</dt><dd><code>openid email offline_access</code></dd>
+        <dt>Login e consentimento</dt><dd><code>https://auth.agateo.com.br</code>. A pessoa precisa fazer isso no navegador; não existe chave de API.</dd>
+        <dt>Instruções em Markdown</dt><dd><code>https://auth.agateo.com.br/llms.txt</code></dd>
+      </dl>
+      <p class="muted">Depois de conectado, chame <code>tools/list</code> para ver as ferramentas disponíveis. Hoje existem <code>system_get_status</code> (versão e módulos do servidor) e <code>system_get_current_user</code> (conta conectada). Finanças e agenda estão em construção.</p>
+    </section>
+
+    <section class="doc__section" aria-labelledby="problemas">
+      <h2 id="problemas">Problemas comuns</h2>
+      <dl class="apps">
+        <dt>O e-mail de confirmação não chegou</dt>
+        <dd>Confira a caixa de spam. Na tela de cadastro há um botão para reenviar.</dd>
+        <dt>“Esta solicitação de conexão expirou”</dt>
+        <dd>O pedido do app vale por pouco tempo. Volte ao app e conecte de novo.</dd>
+        <dt>O app pede para conectar de novo</dt>
+        <dd>Remova o conector e adicione outra vez. Se continuar, avise a gente.</dd>
+        <dt>Quero desconectar um app</dt>
+        <dd>Remova o conector nas configurações do próprio app.</dd>
+      </dl>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <span>Servidor MCP: <code>https://mcp.agateo.com.br/mcp</code></span>
+    <span>Feito pela <a href="https://agateo.com.br">Agateo Tecnologia</a> · <a href="https://agateo.com.br/termos">Termos</a> · <a href="https://agateo.com.br/privacidade">Privacidade</a></span>
+  </footer>
+</body>
+</html>

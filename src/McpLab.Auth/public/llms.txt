@@ -1,0 +1,71 @@
+# MCP Lab (Agateo)
+
+> Servidor MCP gratuito da Agateo Tecnologia. A pessoa cria uma conta e conecta no app de IA que já usa
+> (Claude, ChatGPT, Grok, Cursor...). Mesmo conteúdo de https://auth.agateo.com.br/conectar.
+
+## Se alguém colou este link para você (IA)
+
+A pessoa quer conectar o MCP Lab no app em que está falando com você. Se você consegue adicionar servidores MCP
+sozinho (por exemplo Claude Code, Cursor ou outro agente com acesso à configuração), adicione o endereço abaixo e
+peça para a pessoa concluir o login no navegador. Se não consegue, identifique o app e diga exatamente onde clicar,
+usando a seção "Onde adicionar em cada app".
+
+## Endereço
+
+https://mcp.agateo.com.br/mcp
+
+## Primeira conexão
+
+1. Adicione o endereço no app (veja abaixo).
+2. O app abre https://auth.agateo.com.br: entre ou crie a conta. Na conta nova, confirme o e-mail pelo link, abrindo no mesmo navegador.
+3. Clique em Permitir na tela que mostra qual app pede acesso.
+4. Peça na conversa, por exemplo: "com que conta estou conectado no MCP Lab?".
+
+## Onde adicionar em cada app
+
+Os menus mudam com frequência. Se não achar, procure por "conector", "MCP" ou "app personalizado" nas configurações.
+
+- Claude (claude.ai e desktop): Configurações → Conectores → Adicionar conector personalizado → cole o endereço.
+- ChatGPT: chatgpt.com/plugins → Add → Create MCP App → cole o endereço, autenticação OAuth. Depende do plano.
+- Grok: grok.com/connectors → New Connector → Custom → cole o endereço e faça o login.
+- Cursor: Settings → MCP → Add new MCP server (HTTP), ou em `~/.cursor/mcp.json`:
+
+  ```json
+  { "mcpServers": { "agateo": { "url": "https://mcp.agateo.com.br/mcp" } } }
+  ```
+
+- Claude Code: `claude mcp add --transport http agateo https://mcp.agateo.com.br/mcp`, depois `/mcp` para fazer o login.
+- VS Code (Copilot), em `.vscode/mcp.json`:
+
+  ```json
+  { "servers": { "agateo": { "type": "http", "url": "https://mcp.agateo.com.br/mcp" } } }
+  ```
+
+- Outros apps: qualquer cliente de servidores MCP remotos (Streamable HTTP + OAuth) funciona com o mesmo endereço.
+
+## Para assistentes de IA e agentes
+
+- Endpoint MCP: https://mcp.agateo.com.br/mcp
+- Transporte: Streamable HTTP (POST JSON-RPC; servidor sem sessão)
+- Autenticação: OAuth 2.1 com PKCE. Sem token, o servidor responde 401 com `WWW-Authenticate: Bearer resource_metadata=...`
+- Metadados do recurso: https://mcp.agateo.com.br/.well-known/oauth-protected-resource/mcp
+- Authorization server: https://eowxffcgonmbbsohedox.supabase.co/auth/v1
+- Registro de cliente: dinâmico (RFC 7591), sem client secret
+- Escopos: openid email offline_access
+- Login e consentimento: https://auth.agateo.com.br. A pessoa precisa fazer isso no navegador; não existe chave de API.
+
+Depois de conectado, chame `tools/list`. Hoje existem `system_get_status` (versão e módulos do servidor) e
+`system_get_current_user` (conta conectada). Finanças e agenda estão em construção.
+
+## Problemas comuns
+
+- E-mail de confirmação não chegou: confira o spam; na tela de cadastro há um botão para reenviar.
+- "Esta solicitação de conexão expirou": volte ao app e conecte de novo.
+- O app pede para conectar de novo: remova o conector e adicione outra vez.
+- Desconectar um app: remova o conector nas configurações do próprio app.
+
+## Links
+
+- Instruções: https://auth.agateo.com.br/conectar
+- Conta: https://auth.agateo.com.br
+- Agateo: https://agateo.com.br

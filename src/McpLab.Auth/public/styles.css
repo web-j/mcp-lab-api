@@ -111,6 +111,44 @@ code { font-family: var(--mono); font-size: 0.86em; word-break: break-all; }
   color: var(--ink);
 }
 
+/* Abas das seções (conta / como conectar) */
+
+.sections {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+  width: fit-content;
+  margin: 0.875rem auto 0;
+  padding: 0.25rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.sections a {
+  display: inline-flex;
+  align-items: center;
+  height: 2.25rem;
+  padding: 0 1rem;
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.875rem;
+  font-weight: 540;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  transition: background-color 0.2s var(--ease), color 0.2s var(--ease);
+}
+
+.sections a:hover { color: var(--ink); }
+
+.sections a[aria-current="page"] {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 4px 12px -6px rgba(0, 0, 0, 0.2);
+}
+
+body[data-view="consent"] .sections,
+body[data-view="reset"] .sections { display: none; }
+
 /* Página */
 
 .page {
@@ -340,6 +378,7 @@ form .primary { margin-top: 0.5rem; }
   font-size: 0.9rem;
   font-weight: 540;
   color: var(--ink);
+  text-decoration: none;
   transition: border-color 0.2s var(--ease);
 }
 
@@ -392,6 +431,115 @@ form .primary { margin-top: 0.5rem; }
 
 .clients li { padding: 0.7rem 0; border-bottom: 1px solid var(--line); color: var(--muted); }
 .clients b { display: block; color: var(--ink); font-weight: 560; }
+
+/* Página de instruções (/conectar) */
+
+.doc {
+  flex: 1;
+  width: min(760px, 100%);
+  margin: 0 auto;
+  padding: clamp(2.5rem, 6vw, 4rem) 1rem clamp(2.5rem, 6vw, 4rem);
+  display: grid;
+  gap: clamp(2.25rem, 5vw, 3.25rem);
+}
+
+.doc__head { display: grid; }
+.doc__head .copy { margin-top: 1.5rem; }
+
+.ai-prompt {
+  margin-top: 1rem;
+  padding: 1.1rem 1.1rem 1.2rem;
+  display: grid;
+  gap: 0.8rem;
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 24px 48px -28px rgba(0, 0, 0, 0.2);
+}
+
+.ai-prompt__head { display: grid; gap: 0.2rem; }
+.ai-prompt__head b { color: var(--ink); font-weight: 560; letter-spacing: -0.01em; }
+.ai-prompt__head span { color: var(--muted); font-size: 0.9rem; }
+
+.ai-prompt blockquote {
+  margin: 0;
+  padding: 0.8rem 0.95rem;
+  border-radius: var(--r-md);
+  background: var(--bg);
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.ai-prompt .primary { justify-self: start; }
+
+.copy--lg { padding: 0.5rem 0.5rem 0.5rem 1.25rem; }
+.copy--lg code { font-size: 0.95rem; }
+
+.doc__section { display: grid; gap: 0.9rem; min-width: 0; }
+
+/* Itens de grid encolhem; blocos de código rolam dentro de si em vez de alargar a página. */
+.doc > *, .doc__head > *, .doc__section > * { min-width: 0; }
+
+.doc__section h2 {
+  font-size: 1.35rem;
+  font-weight: 520;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+
+.doc__section > p { max-width: 42rem; }
+
+.steps--doc { margin-top: 0; }
+
+@media (max-width: 899px) {
+  .steps.steps--doc { display: grid; }
+}
+
+.apps {
+  margin: 0;
+  display: grid;
+  border-top: 1px solid var(--line);
+}
+
+.apps dt {
+  padding-top: 0.95rem;
+  font-weight: 560;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.apps dt span { font-weight: 400; color: var(--muted); }
+
+.apps dd {
+  margin: 0.25rem 0 0;
+  padding-bottom: 0.95rem;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  min-width: 0;
+}
+
+.apps code, .facts--doc code { color: var(--ink); }
+
+pre {
+  margin: 0.6rem 0 0.4rem;
+  padding: 0.85rem 1rem;
+  overflow-x: auto;
+  border-radius: var(--r-md);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--ink);
+}
+
+pre code { word-break: normal; white-space: pre; font-size: 0.8125rem; }
+
+.facts--doc { background: var(--surface); border: 1px solid var(--line); }
+
+@media (max-width: 560px) {
+  .facts--doc { grid-template-columns: 1fr; gap: 0.15rem; }
+  .facts--doc dd { margin-bottom: 0.6rem; }
+}
 
 /* Rodapé */
 
