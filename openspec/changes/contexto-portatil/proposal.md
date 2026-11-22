@@ -19,8 +19,8 @@ Issue: [web-j/mcp-lab-api#5](https://github.com/web-j/mcp-lab-api/issues/5)
   sob demanda, e os detalhes ficam nas tools de cada módulo.
 - **Instruções do servidor** (`instructions` do `initialize`): pedem à IA que leia o cartão no começo da conversa
   e salve pendências e "onde paramos" ao longo dela.
-- **Mudança no host**: tools de escrita passam a declarar o evento que geram; o host registra o evento depois que a
-  tool termina com sucesso.
+- **Mudança na plataforma**: tools de escrita passam a registrar o evento que geram (`IActivityRecorder`); um filtro
+  grava o evento depois que a tool termina com sucesso.
 
 Tools, resources e prompts novos:
 
@@ -57,16 +57,16 @@ Tools, resources e prompts novos:
 
 ## Impact
 
-- Projetos novos: `src/Modules/Context/McpLab.Context` e `McpLab.Context.Contracts` (com `ActivityEntry`, que os
-  outros módulos usam para declarar o evento da escrita).
-- `McpLab.Host`: filtro de chamada de tool que registra eventos; `instructions` do servidor.
+- Projetos novos: `src/Modules/Context/McpLab.Context` e `McpLab.Context.Contracts` (`ActivityEntry` e
+  `IActivityRecorder`, que os outros módulos usam para registrar o evento da escrita).
+- `McpLab.Context`: filtro de chamada de tool que grava os eventos. `McpLab.Host`: `instructions` do servidor.
 - Banco: schema `context` (eventos, notas, resumos, nomes dos apps conectados). Primeira migration do projeto, que
   define o padrão de EF Core por módulo.
 - `McpLab.Mcp.Conventions`: helper para tools de escrita declararem o evento.
 - Supabase: leitura do nome do app conectado (cliente OAuth) com a chave de serviço, guardado em cache.
 - Testes:
-  - **Contrato MCP**: as novas tools seguem as convenções; o cartão respeita o teto com 10 mil eventos;
-    `instructions` presente no `initialize`.
+  - **Contrato MCP**: as novas tools seguem as convenções; `instructions` presente no `initialize`.
+  - **Integração**: o cartão respeita o teto com 10 mil eventos; tool de escrita sem evento falha nos testes.
   - **Arquitetura**: módulos só usam `Context.Contracts`.
   - **Integração** (Testcontainers + Postgres): isolamento entre usuários, evento gravado só em escrita com sucesso,
     resumo semanal, busca em português.

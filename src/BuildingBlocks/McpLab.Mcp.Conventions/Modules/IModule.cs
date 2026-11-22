@@ -16,4 +16,9 @@ public interface IModule
     string Description { get; }
 
     void Register(IHostApplicationBuilder builder, IMcpServerBuilder mcp);
+
+    /// <summary>
+    /// Roda uma vez na subida do host, antes de aceitar requisições. Módulos com banco aplicam as migrations aqui.
+    /// </summary>
+    Task InitializeAsync(IServiceProvider services, CancellationToken cancellationToken) => Task.CompletedTask;
 }

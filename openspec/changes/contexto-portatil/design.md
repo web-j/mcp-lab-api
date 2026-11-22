@@ -51,13 +51,17 @@ Semana 47: Finanças 12 despesas, R$ 1.240,00 · Agenda 3 compromissos
 
 ### 2. Texto dos eventos gerado por código, no momento da escrita
 
-Cada tool de escrita devolve um `ActivityEntry` (resumo ≤ 120 caracteres e referência), montado com template do
-próprio módulo: `$"Despesa {valor:C} · {categoria}"`. Gravar não custa token, o texto é sempre curto e igual entre
-apps, e não depende da IA lembrar de registrar.
+Cada tool de escrita registra um `ActivityEntry` (resumo ≤ 120 caracteres, referência e números), montado com
+template do próprio módulo: `$"Despesa {PtBr.Money(valor)} · {categoria}"`. Gravar não custa token, o texto é sempre
+curto e igual entre apps, e não depende da IA lembrar de registrar.
 
-Mecanismo: as tools de escrita retornam `WriteResult<T>` (resultado e `ActivityEntry`). Um filtro de `CallTool` no
-host lê o `ActivityEntry` depois do sucesso e grava pela interface `IActivityLog` (`Context.Contracts`). O teste de
-contrato confere por reflexão que toda tool com `ReadOnly = false`, fora do módulo `context`, retorna `WriteResult<T>`.
+Mecanismo: a tool chama `IActivityRecorder.Record(entry)` (`Context.Contracts`, escopo da requisição). Um filtro de
+`CallTool`, registrado pelo módulo Context, grava os eventos depois que a tool termina sem `isError`. Uma tool de
+escrita que termina sem registrar vira erro em desenvolvimento e testes, e log de erro em produção; os testes de
+integração de cada módulo pegam o esquecimento.
+
+Descartado: retornar `WriteResult<T>`. O SDK gera o `outputSchema` e a resposta a partir do tipo de retorno, então o
+evento iria para a IA e gastaria token sem utilidade.
 
 ### 3. Notas escritas pela IA, com limite e tipos
 
@@ -82,17 +86,18 @@ context.events
   client_id text, summary varchar(120), entity_ref text null,
   metrics jsonb null,            -- ex.: {"count":1,"amount":80.00}
   idempotency_key text null,     -- unique (user_id, tool, idempotency_key)
-  search tsvector generated (unaccent + portuguese)
-  idx (user_id, occurred_at desc), gin(search)
+  idx (user_id, occurred_at desc)
+  -- busca (tsvector + unaccent) entra na entrega 3
 
 context.notes
   id uuid pk, user_id uuid, kind text, text varchar(280), module text null,
   status text (open|done), pinned bool, client_id text,
-  created_at, updated_at, search tsvector generated
+  created_at, updated_at
   idx (user_id, status, pinned, updated_at desc), gin(search)
 
 context.weekly_rollups
-  user_id, module, iso_week (ex.: 2026-W47), metrics jsonb, line varchar(160), pk (user_id, module, iso_week)
+  user_id, module, iso_week (ex.: 2026-W47), event_count int, metrics jsonb, updated_at,
+  pk (user_id, module, iso_week)   -- a linha de texto é montada na leitura (entrega 2)
 
 context.clients
   client_id text pk, name text, fetched_at timestamptz   -- cache do nome do app (Supabase admin API)
@@ -103,8 +108,8 @@ posterior.
 
 ### 6. Comunicação entre módulos
 
-Os módulos dependem só de `McpLab.Context.Contracts` (`ActivityEntry`, `WriteResult<T>`, `IActivityLog`). O módulo
-Context implementa `IActivityLog`. Como cada módulo tem seu `DbContext`, o evento é gravado logo depois da escrita,
+Os módulos dependem só de `McpLab.Context.Contracts` (`ActivityEntry`, `IActivityRecorder`). O módulo Context
+implementa o gravador, o filtro e a gravação. Como cada módulo tem seu `DbContext`, o evento é gravado logo depois da escrita,
 fora da transação do módulo. Se a gravação do evento falhar, a escrita de negócio continua valendo e o erro vai
 para log/telemetria. Uma outbox fica para quando houver consumidor que precise de garantia.
 

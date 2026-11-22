@@ -1,3 +1,4 @@
+using McpLab.Context;
 using McpLab.Finance;
 using McpLab.Host;
 using McpLab.Host.Auth;
@@ -19,9 +20,15 @@ var mcp = builder.Services
     .AddAuthorizationFilters()
     .WithTools<SystemTools>();
 
-builder.AddModules(mcp, new FinanceModule(), new SchedulingModule());
+builder.AddModules(mcp, new ContextModule(), new FinanceModule(), new SchedulingModule());
 
 var app = builder.Build();
+
+// Migrations de cada módulo antes de aceitar requisições (como no ADS). Os testes de contrato desligam, pois não têm banco.
+if (app.Configuration.GetValue("Database:MigrateOnStartup", true))
+{
+    await app.Services.InitializeModulesAsync();
+}
 
 app.UseForwardedHeaders();
 app.UseCors();
@@ -36,6 +43,6 @@ app.MapMcp("/mcp")
     .RequireAuthorization(AuthExtensions.McpPolicy)
     .RequireRateLimiting(EdgeProtectionExtensions.McpRateLimit);
 
-app.Run();
+await app.RunAsync();
 
 public partial class Program;

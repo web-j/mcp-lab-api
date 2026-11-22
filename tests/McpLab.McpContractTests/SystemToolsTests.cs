@@ -18,6 +18,6 @@ public sealed class SystemToolsTests(McpServerFixture server) : IClassFixture<Mc
         var modules = status.GetProperty("modules").EnumerateArray().Select(m => m.GetProperty("name").GetString()).ToList();
 
         Assert.Equal("mcp-lab-api", status.GetProperty("server").GetString());
-        Assert.Equal(["finance", "scheduling"], modules);
+        Assert.Equal(["context", "finance", "scheduling"], modules);
     }
 }
