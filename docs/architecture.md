@@ -28,6 +28,21 @@ PostgreSQL ─ um schema por módulo + schema platform (auditoria, idempotência
 - Cada módulo implementa `IModule`: informa o prefixo das tools (`Name`), uma descrição e registra os próprios serviços e primitivas MCP.
 - O host só registra a lista de módulos em `Program.cs`. Um módulo novo não muda mais nada no host.
 
+## Persistência
+
+- Um `DbContext` por módulo, no schema do módulo (ADR 0004), com nomes em snake_case e tabela de migrations no próprio
+  schema (`<schema>.__migrations`). Todos usam o `NpgsqlDataSource` registrado pelo host (Aspire).
+- Migrations ficam em `src/Modules/<Modulo>/McpLab.<Modulo>/Persistence/Migrations` e são aplicadas na subida do host,
+  por `IModule.InitializeAsync`, antes de aceitar requisições.
+- Criar migration: `dotnet tool restore` e
+  `dotnet ef migrations add <Nome> --project src/Modules/<Modulo>/McpLab.<Modulo> --output-dir Persistence/Migrations`.
+
+## Contexto portátil
+
+Módulo `Context` (ADR 0010, `openspec/changes/contexto-portatil`): toda tool de escrita registra um evento curto no
+`IActivityRecorder`; um filtro de `CallTool` grava em `context.events` e soma em `context.weekly_rollups` quando a tool
+termina com sucesso. Notas da IA (`context.notes`) e o cartão "onde parei" vêm nas próximas entregas.
+
 ## Host
 
 - `ModelContextProtocol.AspNetCore` com transporte Streamable HTTP em `/mcp`.
@@ -69,5 +84,7 @@ mcp-lab-api ── rede mcplab ──► mcp-lab-postgres (sem porta no host)
 ## Testes
 
 - `McpLab.ArchitectureTests`: um módulo não referencia outro diretamente; building blocks não dependem de módulos.
+- `McpLab.IntegrationTests`: host completo com Postgres em container (Testcontainers) e migrations reais; precisa
+  de Docker rodando.
 - `McpLab.McpContractTests`: sobe o host em memória, conecta um cliente MCP real (com token assinado por uma chave de teste no formato do Supabase) e valida todas as tools contra as convenções e o contrato de autorização.
 - `McpLab.Evals` (fase 4): cenários em linguagem natural executados por um agente real.

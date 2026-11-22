@@ -1,34 +1,24 @@
 using McpLab.Mcp.Conventions.Modules;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using McpLab.Testing;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Protocols;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using ModelContextProtocol.Client;
 
 namespace McpLab.McpContractTests;
 
 /// <summary>
-/// Sobe o host em memória e conecta um cliente MCP de verdade em <c>/mcp</c>, autenticado com um token
+/// Sobe o host em memória, sem banco, e conecta um cliente MCP de verdade em <c>/mcp</c>, autenticado com um token
 /// no formato do Supabase OAuth (assinado por <see cref="TestTokens.SigningKey"/>).
 /// </summary>
 public sealed class McpServerFixture : IAsyncLifetime
 {
     public WebApplicationFactory<Program> Factory { get; } = new WebApplicationFactory<Program>()
         .WithWebHostBuilder(builder => builder
-            .UseEnvironment("Testing")
+            .UseTestAuthentication()
             // Só a string precisa existir: os testes de contrato não abrem conexão com o banco.
             .UseSetting("ConnectionStrings:mcplab", "Host=localhost;Database=mcplab;Username=test;Password=test")
-            .UseSetting("Auth:Issuer", TestTokens.Issuer)
-            .UseSetting("Auth:Resource", "http://localhost/mcp")
-            .ConfigureTestServices(services => services.PostConfigure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, o =>
-            {
-                var configuration = new OpenIdConnectConfiguration { Issuer = TestTokens.Issuer };
-                configuration.SigningKeys.Add(TestTokens.SigningKey);
-                o.ConfigurationManager = new StaticConfigurationManager<OpenIdConnectConfiguration>(configuration);
-            })));
+            .UseSetting("Database:MigrateOnStartup", "false"));
 
     public McpClient Client { get; private set; } = null!;
 
@@ -36,19 +26,8 @@ public sealed class McpServerFixture : IAsyncLifetime
 
     public async ValueTask InitializeAsync() => Client = await ConnectAsync(TestTokens.OAuthAccessToken());
 
-    public Task<McpClient> ConnectAsync(string accessToken)
-    {
-        var transport = new HttpClientTransport(
-            new HttpClientTransportOptions
-            {
-                Endpoint = new Uri(Factory.Server.BaseAddress, "/mcp"),
-                TransportMode = HttpTransportMode.StreamableHttp,
-                AdditionalHeaders = new Dictionary<string, string> { ["Authorization"] = $"Bearer {accessToken}" },
-            },
-            Factory.CreateClient());
-
-        return McpClient.CreateAsync(transport, cancellationToken: TestContext.Current.CancellationToken);
-    }
+    public Task<McpClient> ConnectAsync(string accessToken) =>
+        Factory.ConnectMcpAsync(accessToken, TestContext.Current.CancellationToken);
 
     public async ValueTask DisposeAsync()
     {

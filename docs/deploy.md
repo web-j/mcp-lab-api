@@ -29,6 +29,7 @@ Environment `production` (só a `main`):
 | secret | `VPS_SSH_KEY` | chave privada exclusiva do deploy (comentário `mcp-lab-deploy` no `authorized_keys` do `deploy`) |
 | secret | `VPS_KNOWN_HOSTS` | host keys da VPS |
 | secret | `POSTGRES_PASSWORD` | senha do Postgres do lab |
+| secret | `SUPABASE_SECRET_KEY` | chave secreta do projeto `mcp-lab`, só para ler o nome dos apps conectados (API admin de clientes OAuth) |
 | variable | `VPS_HOST`, `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`, `LETSENCRYPT_EMAIL` | |
 
 ## Na VPS
@@ -48,6 +49,9 @@ ssh agateo-vps 'cd /opt/agateo/mcp-lab && docker compose logs -f api'
 # voltar para uma versão anterior
 ssh agateo-vps 'cd /opt/agateo/mcp-lab && sudo -u deploy sh scripts/deploy.sh <sha> contato@agateo.com.br'
 ```
+
+As migrations de cada módulo rodam na subida do `mcp-lab-api` (`IModule.InitializeAsync`), antes de aceitar
+requisições. Se uma migration falhar, o container não sobe e o deploy acusa no health check.
 
 O certificado `mcp-lab` (os dois nomes) é emitido pelo certbot do stack da borda na primeira execução do
 `deploy.sh` e renovado junto com os outros.

@@ -34,6 +34,8 @@ services:
       Auth__Issuer: ${SUPABASE_URL}/auth/v1
       Auth__Resource: https://mcp.agateo.com.br/mcp
       Auth__Documentation: https://auth.agateo.com.br
+      # Só para ler o nome dos apps conectados (clientes OAuth) na API admin do Supabase.
+      Supabase__SecretKey: ${SUPABASE_SECRET_KEY:-}
     depends_on:
       postgres:
         condition: service_healthy

@@ -8,6 +8,10 @@
     <Project Path="src/BuildingBlocks/McpLab.Mcp.Conventions/McpLab.Mcp.Conventions.csproj" />
     <Project Path="src/BuildingBlocks/McpLab.SharedKernel/McpLab.SharedKernel.csproj" />
   </Folder>
+  <Folder Name="/src/Modules/Context/">
+    <Project Path="src/Modules/Context/McpLab.Context/McpLab.Context.csproj" />
+    <Project Path="src/Modules/Context/McpLab.Context.Contracts/McpLab.Context.Contracts.csproj" />
+  </Folder>
   <Folder Name="/src/Modules/Finance/">
     <Project Path="src/Modules/Finance/McpLab.Finance/McpLab.Finance.csproj" />
     <Project Path="src/Modules/Finance/McpLab.Finance.Contracts/McpLab.Finance.Contracts.csproj" />
@@ -18,7 +22,9 @@
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/McpLab.ArchitectureTests/McpLab.ArchitectureTests.csproj" />
+    <Project Path="tests/McpLab.IntegrationTests/McpLab.IntegrationTests.csproj" />
     <Project Path="tests/McpLab.McpContractTests/McpLab.McpContractTests.csproj" />
+    <Project Path="tests/McpLab.Testing/McpLab.Testing.csproj" />
   </Folder>
   <Folder Name="/Solution Items/">
     <File Path="Directory.Build.props" />

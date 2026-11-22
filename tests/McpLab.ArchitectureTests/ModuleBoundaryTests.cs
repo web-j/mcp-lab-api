@@ -1,4 +1,5 @@
 using System.Reflection;
+using McpLab.Context;
 using McpLab.Finance;
 using McpLab.Mcp.Conventions.Modules;
 using McpLab.Scheduling;
@@ -11,7 +12,7 @@ namespace McpLab.ArchitectureTests;
 /// </summary>
 public sealed class ModuleBoundaryTests
 {
-    private static readonly Assembly[] ModuleAssemblies = [typeof(FinanceModule).Assembly, typeof(SchedulingModule).Assembly];
+    private static readonly Assembly[] ModuleAssemblies = [typeof(ContextModule).Assembly, typeof(FinanceModule).Assembly, typeof(SchedulingModule).Assembly];
 
     public static TheoryData<string> Modules() => [.. ModuleAssemblies.Select(a => a.GetName().Name!)];
 

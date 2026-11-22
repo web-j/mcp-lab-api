@@ -27,6 +27,7 @@ Toda funcionalidade nova passa pelo OpenSpec em `openspec/`, no mesmo repo do c�
 - **Toda tool exige login.** O host valida o token do Supabase do lab (ADR 0007); as tools usam `ICurrentUser` e filtram tudo pelo `Id`. Nunca receber ID de usuário como parâmetro.
 - **Monolito modular.** Cada módulo fica em `src/Modules/<Modulo>/` e implementa `IModule`. Um módulo só usa outro pelo projeto `*.Contracts`; os testes de arquitetura falham se isso for violado.
 - **Tools seguem `docs/mcp-guidelines.md`.** Nome `modulo_verbo_objeto`, `Title`, descrição dizendo quando usar e quando não usar, as quatro anotações (`ReadOnly`, `Destructive`, `Idempotent`, `OpenWorld`) e `UseStructuredContent = true`. `McpLab.McpContractTests` falha se alguma tool fugir disso.
+- **Toda tool de escrita registra o que fez** no `IActivityRecorder` (resumo curto em pt-BR com `PtBr.Money`), para o contexto portátil entre IAs (ADR 0010).
 - **Erro de negócio é resultado, não exceção.** O domínio devolve `Result<T>`/`Error` (SharedKernel) e a mensagem ensina o agente a corrigir.
 - **Um schema Postgres por módulo**, com `DbContext` e migrations próprios.
 - Código e identificadores em inglês; descrições de tools, mensagens de erro, docs e ADRs em português do Brasil.
@@ -36,7 +37,8 @@ Toda funcionalidade nova passa pelo OpenSpec em `openspec/`, no mesmo repo do c�
 
 ```bash
 dotnet build                                   # warnings são erros
-dotnet test                                    # Microsoft Testing Platform (global.json)
+dotnet test                                    # Microsoft Testing Platform (global.json); integração precisa de Docker
+dotnet tool restore                            # dotnet-ef para criar migrations (ver docs/architecture.md)
 dotnet run --project src/McpLab.AppHost        # Aspire: Postgres + host + MCP Inspector + painel
 ```
 

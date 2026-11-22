@@ -89,9 +89,10 @@ jobs:
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           SUPABASE_URL: ${{ vars.SUPABASE_URL }}
           SUPABASE_PUBLISHABLE_KEY: ${{ vars.SUPABASE_PUBLISHABLE_KEY }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
         run: |
-          printf 'POSTGRES_PASSWORD=%s\nSUPABASE_URL=%s\nSUPABASE_PUBLISHABLE_KEY=%s\nIMAGE_TAG=prod\n' \
-            "$POSTGRES_PASSWORD" "$SUPABASE_URL" "$SUPABASE_PUBLISHABLE_KEY" \
+          printf 'POSTGRES_PASSWORD=%s\nSUPABASE_URL=%s\nSUPABASE_PUBLISHABLE_KEY=%s\nSUPABASE_SECRET_KEY=%s\nIMAGE_TAG=prod\n' \
+            "$POSTGRES_PASSWORD" "$SUPABASE_URL" "$SUPABASE_PUBLISHABLE_KEY" "$SUPABASE_SECRET_KEY" \
           | ssh -i ~/.ssh/deploy deploy@${{ vars.VPS_HOST }} 'umask 077 && cat > /opt/agateo/mcp-lab/.env'
 
       - name: Sobe o stack

@@ -20,4 +20,15 @@ public static class ModuleExtensions
 
         return builder;
     }
+
+    /// <summary>Inicializa os módulos na ordem em que foram registrados (migrations, por exemplo).</summary>
+    public static async Task InitializeModulesAsync(this IServiceProvider services, CancellationToken cancellationToken = default)
+    {
+        await using var scope = services.CreateAsyncScope();
+
+        foreach (var module in scope.ServiceProvider.GetServices<IModule>())
+        {
+            await module.InitializeAsync(scope.ServiceProvider, cancellationToken);
+        }
+    }
 }

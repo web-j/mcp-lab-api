@@ -2,7 +2,7 @@ using System.Security.Cryptography;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 
-namespace McpLab.McpContractTests;
+namespace McpLab.Testing;
 
 /// <summary>Emite tokens no formato dos do Supabase OAuth, assinados com uma chave local (ES256).</summary>
 public static class TestTokens
@@ -16,11 +16,11 @@ public static class TestTokens
     public static ECDsaSecurityKey SigningKey { get; } = new(ECDsa.Create(ECCurve.NamedCurves.nistP256)) { KeyId = "test" };
 
     /// <summary>Token de acesso OAuth válido, como o que o ChatGPT ou o Claude recebem depois do consentimento.</summary>
-    public static string OAuthAccessToken(bool includeClientId = true, string issuer = Issuer)
+    public static string OAuthAccessToken(bool includeClientId = true, string issuer = Issuer, Guid? userId = null)
     {
         var claims = new Dictionary<string, object>
         {
-            ["sub"] = UserId.ToString(),
+            ["sub"] = (userId ?? UserId).ToString(),
             ["email"] = Email,
             ["role"] = "authenticated",
         };
