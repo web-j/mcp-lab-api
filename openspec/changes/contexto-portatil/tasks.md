@@ -7,7 +7,7 @@ Issue: [web-j/mcp-lab-api#5](https://github.com/web-j/mcp-lab-api/issues/5)
 - [x] 1.3 Módulo `Context`: schema `context` (events, notes, weekly_rollups, clients), gravação idempotente com rollup somado no banco (`context.jsonb_sum`)
 - [x] 1.4 Filtro de `CallTool` que grava o evento de tools de escrita com sucesso (erro fora de produção quando a tool não registra); cache do nome do app (Supabase admin API, `SUPABASE_SECRET_KEY`)
 - [x] 1.5 Testes: arquitetura (módulos e `PtBr.Money`), integração com Testcontainers (evento só em sucesso, leitura não grava, idempotência, soma semanal, isolamento entre usuários, tool que esquece o evento, app conectado em cache)
-- [ ] 1.6 ADR 0010 (feito); PR verde, merge e deploy
+- [x] 1.6 ADR 0010; PR verde, merge e deploy (web-j/mcp-lab-api#7): schema `context` criado em produção
 
 ## 2. Entrega 2: notas, cartão e instruções
 
