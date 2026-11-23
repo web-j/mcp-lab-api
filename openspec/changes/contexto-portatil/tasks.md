@@ -21,7 +21,7 @@ Issue: [web-j/mcp-lab-api#5](https://github.com/web-j/mcp-lab-api/issues/5)
 
 - [x] 3.1 `context_search_history` (tsvector em português com unaccent mais substring para trechos curtos, filtros de módulo, tipo e período, cursor) e `context_list_activity`; o cartão aponta para a busca quando algo fica de fora
 - [x] 3.2 Testes de integração: busca sem acento e por trecho, notas concluídas e handoffs antigos, filtro por tipo, páginas de 20 com cursor, datas no fuso de Brasília, linha do tempo por módulo, isolamento, cursor inválido; orçamento das descrições mantido em 3.600 caracteres
-- [ ] 3.3 PR verde, merge e deploy
+- [x] 3.3 PR verde, merge e deploy (web-j/mcp-lab-api#12): em produção, busca "farmacia" acha a nota com "farmácia"
 
 ## 4. Validação entre apps
 
