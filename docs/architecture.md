@@ -41,7 +41,9 @@ PostgreSQL ─ um schema por módulo + schema platform (auditoria, idempotência
 
 Módulo `Context` (ADR 0010, `openspec/changes/contexto-portatil`): toda tool de escrita registra um evento curto no
 `IActivityRecorder`; um filtro de `CallTool` grava em `context.events` e soma em `context.weekly_rollups` quando a tool
-termina com sucesso. Notas da IA (`context.notes`) e o cartão "onde parei" vêm nas próximas entregas.
+termina com sucesso. A IA salva notas curtas (`context_save_note`: objetivo, pendência, decisão, preferência, fato,
+"onde paramos") e lê tudo num cartão de tamanho fixo (`context_get_summary`, resource `context://summary`, prompt
+`context_resume`). As `instructions` do `initialize` pedem para ler o cartão no começo da conversa.
 
 ## Host
 

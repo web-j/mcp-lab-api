@@ -68,6 +68,9 @@ evento iria para a IA e gastaria token sem utilidade.
 Tipos: `goal`, `pending`, `decision`, `preference`, `fact`, `handoff`. Limite de 280 caracteres, para obrigar a
 resumir. Estado `open/done`, `pinned`. O `handoff` é o "onde paramos": só o mais recente entra no cartão.
 
+Cada nota tem um número curto por usuário (`#12`), que o cartão mostra e as tools de atualizar e apagar recebem.
+O ID (36 caracteres) gastaria token em cada linha do cartão e em cada chamada.
+
 As `instructions` do servidor (≤ 600 caracteres) orientam a IA: ler o cartão no começo, salvar `pending`/`decision`
 quando surgirem e `handoff` quando a pessoa encerrar ou pedir. O suporte a `instructions` varia por app, então as
 descrições das tools repetem a orientação essencial e existe o prompt `context_resume` para uso manual.

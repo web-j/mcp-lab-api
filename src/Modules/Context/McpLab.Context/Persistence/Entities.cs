@@ -22,6 +22,9 @@ internal sealed class ContextNote
 {
     public Guid Id { get; set; }
     public Guid UserId { get; set; }
+
+    /// <summary>Número curto por usuário (#12), mais barato em tokens que o ID para a IA referenciar a nota.</summary>
+    public int Number { get; set; }
     public required string Kind { get; set; }
     public required string Text { get; set; }
     public string? Module { get; set; }
