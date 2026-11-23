@@ -89,14 +89,14 @@ context.events
   client_id text, summary varchar(120), entity_ref text null,
   metrics jsonb null,            -- ex.: {"count":1,"amount":80.00}
   idempotency_key text null,     -- unique (user_id, tool, idempotency_key)
+  search tsvector generated (portuguese + context.f_unaccent), gin(search)
   idx (user_id, occurred_at desc)
-  -- busca (tsvector + unaccent) entra na entrega 3
 
 context.notes
   id uuid pk, user_id uuid, kind text, text varchar(280), module text null,
   status text (open|done), pinned bool, client_id text,
-  created_at, updated_at
-  idx (user_id, status, pinned, updated_at desc), gin(search)
+  created_at, updated_at, search tsvector generated, gin(search)
+  idx (user_id, status, pinned, updated_at desc), (user_id, updated_at desc), gin(search)
 
 context.weekly_rollups
   user_id, module, iso_week (ex.: 2026-W47), event_count int, metrics jsonb, updated_at,
@@ -121,6 +121,13 @@ para log/telemetria. Uma outbox fica para quando houver consumidor que precise d
 O token traz só o `client_id`. O nome ("ChatGPT", "Claude", "Grok") vem do cadastro do cliente OAuth no Supabase,
 pela API admin com a chave de serviço, guardado em `context.clients` e lido do cache nas próximas vezes. Sem nome,
 mostra "app desconhecido".
+
+### 8. Busca
+
+`websearch_to_tsquery('portuguese', f_unaccent(texto))` sobre colunas `tsvector` geradas, mais `LIKE` sem acento
+para trechos curtos ou parciais ("farm"), que o stemming não pega. Eventos e notas saem juntos (`UNION ALL`), do mais
+recente para o mais antigo, paginados por cursor `(data, id)`, no mesmo formato de linha do cartão. O `LIKE` não usa
+índice, mas roda só sobre as linhas do usuário (índice por `user_id`).
 
 ## Alternativas descartadas
 

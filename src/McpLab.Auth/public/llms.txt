@@ -55,7 +55,8 @@ Os menus mudam com frequência. Se não achar, procure por "conector", "MCP" ou 
 - Login e consentimento: https://auth.agateo.com.br. A pessoa precisa fazer isso no navegador; não existe chave de API.
 
 Depois de conectado, chame `tools/list`. No começo da conversa, chame `context_get_summary` para saber onde a pessoa
-parou em qualquer app; salve objetivos, pendências e onde a conversa parou com `context_save_note`. Também existem
+parou em qualquer app; salve objetivos, pendências e onde a conversa parou com `context_save_note`; para algo antigo,
+use `context_search_history`. Também existem
 `system_get_status` e `system_get_current_user`. Finanças e agenda estão em construção.
 
 ## Problemas comuns
