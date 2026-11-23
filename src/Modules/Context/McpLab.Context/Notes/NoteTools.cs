@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using McpLab.Context.Clients;
 using McpLab.Context.Persistence;
 using McpLab.Mcp.Conventions.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +10,7 @@ namespace McpLab.Context.Notes;
 
 /// <summary>Notas que a IA escreve sobre a conversa: o que só ela sabe e precisa seguir para o próximo app.</summary>
 [McpServerToolType]
-internal sealed class NoteTools(ContextDbContext db, ICurrentUser user, TimeProvider time)
+internal sealed class NoteTools(ContextDbContext db, ICurrentUser user, TimeProvider time, ClientDirectory clients)
 {
     public const int MaxTextLength = 280;
 
@@ -52,6 +53,9 @@ internal sealed class NoteTools(ContextDbContext db, ICurrentUser user, TimeProv
 
         _db.Notes.Add(note);
         await _db.SaveChangesAsync(cancellationToken);
+
+        // O cartão mostra por qual app a nota foi salva ("Onde paramos (ChatGPT, há 2 h)").
+        await clients.EnsureKnownAsync(_user.ClientId, cancellationToken);
         return NoteInfo.From(note);
     }
 

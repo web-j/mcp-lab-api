@@ -33,6 +33,16 @@ public sealed class ContextSummaryTests(PostgresHostFixture host) : IClassFixtur
     }
 
     [Fact]
+    public async Task Saving_a_note_remembers_the_connected_app()
+    {
+        await using var client = await ConnectAsync(Guid.NewGuid());
+
+        await SaveAsync(client, "fact", "prefere valores arredondados");
+
+        Assert.True(await host.QueryAsync(db => db.Clients.AnyAsync(c => c.ClientId == TestTokens.ClientId, Ct)));
+    }
+
+    [Fact]
     public async Task Only_the_latest_handoff_is_on_the_card()
     {
         await using var client = await ConnectAsync(Guid.NewGuid());
