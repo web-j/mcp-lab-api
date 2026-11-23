@@ -15,7 +15,7 @@ Issue: [web-j/mcp-lab-api#5](https://github.com/web-j/mcp-lab-api/issues/5)
 - [x] 2.2 `context_get_summary` com montagem por prioridade e teto (`brief` 1.500 / `full` 4.000) e resource `context://summary`
 - [x] 2.3 `instructions` do servidor (≤ 600 caracteres) e prompt `context_resume`
 - [x] 2.4 Testes: contrato (tools, resource, prompt, `instructions`, orçamento de 3.600 caracteres das descrições) e integração (troca de app, só o último `handoff`, nota longa, concluir/apagar, número inexistente, 10.000 eventos e 300 notas dentro do teto, isolamento, cartão vazio, resource e prompt)
-- [ ] 2.5 PR verde, merge e deploy
+- [x] 2.5 PR verde, merge e deploy (web-j/mcp-lab-api#9, #10): em produção, nota salva por um app aparece no cartão lido por outro, com o nome do app; refresh token emitido com `offline_access`
 
 ## 3. Entrega 3: busca e listagem
 
