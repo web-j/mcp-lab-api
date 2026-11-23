@@ -19,12 +19,12 @@ internal sealed class SummaryTools(ContextSummaryService summary)
     [McpServerTool(Name = "context_get_summary", Title = "Onde parei",
         ReadOnly = true, Destructive = false, Idempotent = true, OpenWorld = false, UseStructuredContent = true)]
     [Description("""
-        Cartão curto com onde a pessoa parou em qualquer app de IA: último "onde paramos", pendências e objetivos abertos
-        (com o número de cada nota), últimas ações e resumo das semanas. Chame no começo da conversa, antes de responder
-        sobre os dados dela, ou quando ela perguntar onde parou. Use detail=full só se o cartão disser que ficou algo de fora.
+        Cartão curto de onde a pessoa parou em qualquer app de IA: último "onde paramos", pendências e objetivos (com o
+        número de cada nota), últimas ações e semanas. Chame no começo da conversa, antes de responder sobre os dados
+        dela, ou quando perguntar onde parou.
         """)]
     public async Task<ContextSummary> GetSummary(
-        [Description("brief (padrão, até 1.500 caracteres) ou full (até 4.000)")] SummaryDetail detail = SummaryDetail.Brief,
+        [Description("full só se o cartão disser que ficou algo de fora")] SummaryDetail detail = SummaryDetail.Brief,
         CancellationToken cancellationToken = default)
     {
         var (card, omitted) = await _summary.BuildAsync(detail == SummaryDetail.Full, cancellationToken);

@@ -21,15 +21,15 @@ internal sealed class NoteTools(ContextDbContext db, ICurrentUser user, TimeProv
     [McpServerTool(Name = "context_save_note", Title = "Salvar nota de contexto",
         ReadOnly = false, Destructive = false, Idempotent = false, OpenWorld = false, UseStructuredContent = true)]
     [Description("""
-        Guarda uma nota curta que acompanha a pessoa em qualquer app de IA. Use quando surgir um objetivo, uma pendência,
-        uma decisão, uma preferência ou um fato importante, e salve kind=handoff com onde a conversa parou quando a pessoa
-        encerrar ou pedir. Não use para o que as outras tools já gravam (lançamentos, compromissos).
+        Guarda uma nota curta que acompanha a pessoa em qualquer app de IA: objetivo, pendência, decisão, preferência,
+        fato, ou kind=handoff com onde a conversa parou (ao encerrar ou quando pedirem). Não use para o que outras tools
+        já gravam (lançamentos, compromissos).
         """)]
     public async Task<NoteInfo> SaveNote(
-        [Description("goal, pending, decision, preference, fact ou handoff (onde a conversa parou)")] NoteKind kind,
-        [Description("Texto em pt-BR, até 280 caracteres. Ex.: \"orçamento de dezembro: faltam lazer e presentes\"")] string text,
-        [Description("Prefixo do módulo relacionado, se houver. Ex.: finance")] string? module = null,
-        [Description("true para manter no topo do cartão")] bool pinned = false,
+        [Description("handoff = onde a conversa parou")] NoteKind kind,
+        [Description("pt-BR, até 280 caracteres")] string text,
+        [Description("Módulo relacionado. Ex.: finance")] string? module = null,
+        [Description("Manter no topo do cartão")] bool pinned = false,
         CancellationToken cancellationToken = default)
     {
         text = ValidText(text);
@@ -62,13 +62,13 @@ internal sealed class NoteTools(ContextDbContext db, ICurrentUser user, TimeProv
     [McpServerTool(Name = "context_update_note", Title = "Atualizar nota de contexto",
         ReadOnly = false, Destructive = false, Idempotent = true, OpenWorld = false, UseStructuredContent = true)]
     [Description("""
-        Conclui, reabre, fixa, desafixa ou edita uma nota pelo número (#12) que aparece no cartão de context_get_summary.
-        Use complete quando uma pendência ou objetivo for resolvido: a nota sai do cartão e continua guardada.
+        Conclui, reabre, fixa, desafixa ou edita uma nota pelo número (#12) do cartão. Use complete quando uma pendência
+        ou objetivo for resolvido: sai do cartão e continua na busca.
         """)]
     public async Task<NoteInfo> UpdateNote(
-        [Description("Número da nota, sem o #. Ex.: 12")] int number,
-        [Description("complete, reopen, pin, unpin ou edit")] NoteAction action,
-        [Description("Novo texto, só para action=edit (até 280 caracteres)")] string? text = null,
+        [Description("Número sem o #. Ex.: 12")] int number,
+        NoteAction action,
+        [Description("Novo texto, para action=edit")] string? text = null,
         CancellationToken cancellationToken = default)
     {
         var note = await FindAsync(number, cancellationToken);
@@ -92,11 +92,11 @@ internal sealed class NoteTools(ContextDbContext db, ICurrentUser user, TimeProv
     [McpServerTool(Name = "context_delete_note", Title = "Apagar nota de contexto",
         ReadOnly = false, Destructive = true, Idempotent = true, OpenWorld = false, UseStructuredContent = true)]
     [Description("""
-        Apaga de vez uma nota pelo número (#12). Use só quando a pessoa pedir para esquecer algo. Para pendência resolvida,
-        prefira context_update_note com action=complete, que mantém o histórico.
+        Apaga de vez uma nota pelo número (#12). Só quando a pessoa pedir para esquecer algo; para pendência resolvida,
+        use context_update_note com action=complete.
         """)]
     public async Task<DeletedNote> DeleteNote(
-        [Description("Número da nota, sem o #. Ex.: 12")] int number,
+        [Description("Número sem o #. Ex.: 12")] int number,
         CancellationToken cancellationToken = default)
     {
         var note = await FindAsync(number, cancellationToken);

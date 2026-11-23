@@ -110,7 +110,7 @@ public sealed class ContextSummaryTests(PostgresHostFixture host) : IClassFixtur
         Assert.True(brief.Length <= 1_500, $"cartão brief com {brief.Length} caracteres");
         Assert.True(full.Length <= 4_000, $"cartão full com {full.Length} caracteres");
         Assert.True(omittedBrief > 0);
-        Assert.Contains("fora do cartão: chame de novo com detail=full", brief);
+        Assert.Contains("fora do cartão: use detail=full ou context_search_history", brief);
     }
 
     [Fact]

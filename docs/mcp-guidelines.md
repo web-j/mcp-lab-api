@@ -9,7 +9,9 @@
    `finance_record_expense` em vez de `insert_transaction`.
 2. **Nome `modulo_verbo_objeto`** em snake case, com o prefixo do módulo (ou `system` para tools do host).
    Evita colisão com outros servidores no mesmo cliente. *Teste:* `ToolConventionTests`.
-3. **Orçamento de tools.** Toda tool listada custa tokens em toda conversa. Meta: até 12 por módulo.
+3. **Orçamento de tools.** Toda tool listada custa tokens em toda conversa. Meta: até 12 por módulo, e um teto de
+   caracteres (descrições + schemas) por módulo. Parâmetro com valores fixos usa enum, que já lista as opções no schema;
+   não repita as opções na descrição. *Teste:* `ContextContractTests` (3.600 caracteres para as tools de contexto).
 
 ## Descrição
 

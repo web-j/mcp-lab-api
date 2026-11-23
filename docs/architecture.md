@@ -43,7 +43,9 @@ Módulo `Context` (ADR 0010, `openspec/changes/contexto-portatil`): toda tool de
 `IActivityRecorder`; um filtro de `CallTool` grava em `context.events` e soma em `context.weekly_rollups` quando a tool
 termina com sucesso. A IA salva notas curtas (`context_save_note`: objetivo, pendência, decisão, preferência, fato,
 "onde paramos") e lê tudo num cartão de tamanho fixo (`context_get_summary`, resource `context://summary`, prompt
-`context_resume`). As `instructions` do `initialize` pedem para ler o cartão no começo da conversa.
+`context_resume`). As `instructions` do `initialize` pedem para ler o cartão no começo da conversa. O que não cabe no
+cartão sai pela busca (`context_search_history`, texto em português sem acento) e pela linha do tempo paginada
+(`context_list_activity`).
 
 ## Host
 

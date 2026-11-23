@@ -10,7 +10,11 @@ public sealed class ContextContractTests(McpServerFixture server) : IClassFixtur
     {
         var tools = (await server.Client.ListToolsAsync(cancellationToken: Ct)).Select(t => t.Name).ToHashSet();
 
-        Assert.Superset(new HashSet<string> { "context_get_summary", "context_save_note", "context_update_note", "context_delete_note" }, tools);
+        Assert.Superset(new HashSet<string>
+        {
+            "context_get_summary", "context_save_note", "context_update_note", "context_delete_note",
+            "context_search_history", "context_list_activity",
+        }, tools);
     }
 
     [Fact]

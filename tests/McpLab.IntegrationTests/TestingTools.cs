@@ -13,10 +13,10 @@ public sealed class TestingTools(IActivityRecorder activity)
 
     [McpServerTool(Name = "testing_record_sample", ReadOnly = false, Destructive = false, Idempotent = true, OpenWorld = false)]
     [Description("Escrita de teste que registra um evento.")]
-    public string RecordSample(decimal amount, string? idempotencyKey = null)
+    public string RecordSample(decimal amount, string category = "Mercado", string? idempotencyKey = null)
     {
         activity.Record(new ActivityEntry(
-            $"Despesa {PtBr.Money(amount)} · Mercado",
+            $"Despesa {PtBr.Money(amount)} · {category}",
             $"testing:sample:{Guid.NewGuid()}",
             new Dictionary<string, decimal> { ["amount"] = amount },
             idempotencyKey));

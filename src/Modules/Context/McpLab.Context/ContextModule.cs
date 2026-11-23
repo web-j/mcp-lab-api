@@ -1,5 +1,6 @@
 using McpLab.Context.Activity;
 using McpLab.Context.Clients;
+using McpLab.Context.History;
 using McpLab.Context.Contracts;
 using McpLab.Context.Persistence;
 using McpLab.Context.Summary;
@@ -41,6 +42,7 @@ public sealed class ContextModule : IModule
         builder.Services.AddScoped<IActivityRecorder>(sp => sp.GetRequiredService<ActivityRecorder>());
         builder.Services.AddScoped<ActivityLog>();
         builder.Services.AddScoped<ContextSummaryService>();
+        builder.Services.AddScoped<HistoryQuery>();
         builder.Services.Configure<McpServerOptions>(o => o.ServerInstructions = ServerInstructions);
         builder.Services.AddSingleton(TimeProvider.System);
 
