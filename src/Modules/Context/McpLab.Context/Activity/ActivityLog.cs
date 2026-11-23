@@ -11,8 +11,6 @@ internal sealed record ActivityRecord(Guid UserId, string ClientId, string Modul
 /// <summary>Grava eventos na linha do tempo e atualiza o resumo semanal na mesma transação.</summary>
 internal sealed class ActivityLog(ContextDbContext db)
 {
-    private static readonly TimeZoneInfo BrazilTime = FindBrazilTime();
-
     /// <returns><c>false</c> quando o evento já existia (mesma chave de idempotência).</returns>
     public async Task<bool> RecordAsync(ActivityRecord record, CancellationToken cancellationToken)
     {
@@ -50,12 +48,7 @@ internal sealed class ActivityLog(ContextDbContext db)
 
     public static string IsoWeekOf(DateTimeOffset moment)
     {
-        var local = TimeZoneInfo.ConvertTime(moment, BrazilTime).DateTime;
+        var local = BrazilClock.ToLocal(moment);
         return string.Create(CultureInfo.InvariantCulture, $"{ISOWeek.GetYear(local)}-W{ISOWeek.GetWeekOfYear(local):00}");
     }
-
-    private static TimeZoneInfo FindBrazilTime() =>
-        TimeZoneInfo.TryFindSystemTimeZoneById("America/Sao_Paulo", out var zone)
-            ? zone
-            : TimeZoneInfo.CreateCustomTimeZone("BRT", TimeSpan.FromHours(-3), "Brasília", "Brasília");
 }

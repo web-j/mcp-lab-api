@@ -43,6 +43,7 @@ internal sealed class ContextDbContext(DbContextOptions<ContextDbContext> option
             e.Property(x => x.Status).HasMaxLength(10);
             e.Property(x => x.ClientId).HasMaxLength(100);
             e.HasIndex(x => new { x.UserId, x.Status, x.Pinned, x.UpdatedAt });
+            e.HasIndex(x => new { x.UserId, x.Number }).IsUnique();
         });
 
         model.Entity<WeeklyRollup>(e =>

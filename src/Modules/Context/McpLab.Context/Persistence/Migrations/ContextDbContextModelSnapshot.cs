@@ -16,7 +16,7 @@ partial class ContextDbContextModelSnapshot : ModelSnapshot
     // If you encounter a merge conflict in the line below, it means you need to
     // discard one of the migration branches and recreate its migrations on top of
     // the other branch. See https://aka.ms/efcore-docs-migrations-conflicts for more info.
-    public override string LastMigrationId => "20261122232222_CreateContextSchema";
+    public override string LastMigrationId => "20261123000049_AddNoteNumber";
 
     protected override void BuildModel(ModelBuilder modelBuilder)
     {
@@ -146,6 +146,10 @@ partial class ContextDbContextModelSnapshot : ModelSnapshot
                     .HasColumnType("character varying(40)")
                     .HasColumnName("module");
 
+                b.Property<int>("Number")
+                    .HasColumnType("integer")
+                    .HasColumnName("number");
+
                 b.Property<bool>("Pinned")
                     .HasColumnType("boolean")
                     .HasColumnName("pinned");
@@ -172,6 +176,10 @@ partial class ContextDbContextModelSnapshot : ModelSnapshot
 
                 b.HasKey("Id")
                     .HasName("pk_notes");
+
+                b.HasIndex("UserId", "Number")
+                    .IsUnique()
+                    .HasDatabaseName("ix_notes_user_id_number");
 
                 b.HasIndex("UserId", "Status", "Pinned", "UpdatedAt")
                     .HasDatabaseName("ix_notes_user_id_status_pinned_updated_at");

@@ -19,7 +19,7 @@ https://mcp.agateo.com.br/mcp
 1. Adicione o endereço no app (veja abaixo).
 2. O app abre https://auth.agateo.com.br: entre ou crie a conta. Na conta nova, confirme o e-mail pelo link, abrindo no mesmo navegador.
 3. Clique em Permitir na tela que mostra qual app pede acesso.
-4. Peça na conversa, por exemplo: "com que conta estou conectado no MCP Lab?".
+4. Peça na conversa, por exemplo: "anota que estou planejando o orçamento de dezembro". Depois, em outro app: "onde eu parei?".
 
 ## Onde adicionar em cada app
 
@@ -54,8 +54,9 @@ Os menus mudam com frequência. Se não achar, procure por "conector", "MCP" ou 
 - Escopos: openid email offline_access
 - Login e consentimento: https://auth.agateo.com.br. A pessoa precisa fazer isso no navegador; não existe chave de API.
 
-Depois de conectado, chame `tools/list`. Hoje existem `system_get_status` (versão e módulos do servidor) e
-`system_get_current_user` (conta conectada). Finanças e agenda estão em construção.
+Depois de conectado, chame `tools/list`. No começo da conversa, chame `context_get_summary` para saber onde a pessoa
+parou em qualquer app; salve objetivos, pendências e onde a conversa parou com `context_save_note`. Também existem
+`system_get_status` e `system_get_current_user`. Finanças e agenda estão em construção.
 
 ## Problemas comuns
 

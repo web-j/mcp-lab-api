@@ -11,10 +11,10 @@ Issue: [web-j/mcp-lab-api#5](https://github.com/web-j/mcp-lab-api/issues/5)
 
 ## 2. Entrega 2: notas, cartão e instruções
 
-- [ ] 2.1 Tools `context_save_note`, `context_update_note`, `context_delete_note` (limite de 280 caracteres com erro que ensina)
-- [ ] 2.2 `context_get_summary` com montagem por prioridade e teto (`brief` 1.500 / `full` 4.000) e resource `context://summary`
-- [ ] 2.3 `instructions` do servidor (≤ 600 caracteres) e prompt `context_resume`
-- [ ] 2.4 Testes: cartão com 10.000 eventos e 300 notas respeita o teto e informa o que ficou de fora; `instructions` no `initialize`; só o último `handoff` no cartão
+- [x] 2.1 Tools `context_save_note`, `context_update_note`, `context_delete_note` (limite de 280 caracteres com erro que ensina; número curto por usuário `#12` em vez do ID)
+- [x] 2.2 `context_get_summary` com montagem por prioridade e teto (`brief` 1.500 / `full` 4.000) e resource `context://summary`
+- [x] 2.3 `instructions` do servidor (≤ 600 caracteres) e prompt `context_resume`
+- [x] 2.4 Testes: contrato (tools, resource, prompt, `instructions`, orçamento de 3.600 caracteres das descrições) e integração (troca de app, só o último `handoff`, nota longa, concluir/apagar, número inexistente, 10.000 eventos e 300 notas dentro do teto, isolamento, cartão vazio, resource e prompt)
 - [ ] 2.5 PR verde, merge e deploy
 
 ## 3. Entrega 3: busca e listagem

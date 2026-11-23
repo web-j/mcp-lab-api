@@ -57,7 +57,7 @@
         <li><span class="index">01</span><div><b>Adicione o endereço no seu app</b><span>Veja abaixo onde fica a opção em cada um.</span></div></li>
         <li><span class="index">02</span><div><b>Entre ou crie sua conta</b><span>O app abre auth.agateo.com.br. Na conta nova, confirme o e-mail pelo link que chega na sua caixa de entrada, abrindo no mesmo navegador.</span></div></li>
         <li><span class="index">03</span><div><b>Clique em Permitir</b><span>A tela mostra qual app está pedindo acesso. Depois disso você volta para o app, já conectado.</span></div></li>
-        <li><span class="index">04</span><div><b>Peça na conversa</b><span>Por exemplo: “com que conta estou conectado no MCP Lab?”.</span></div></li>
+        <li><span class="index">04</span><div><b>Peça na conversa</b><span>Por exemplo: “anota que estou planejando o orçamento de dezembro”. Depois, em outro app: “onde eu parei?”.</span></div></li>
       </ol>
     </section>
 
@@ -114,7 +114,7 @@
         <dt>Login e consentimento</dt><dd><code>https://auth.agateo.com.br</code>. A pessoa precisa fazer isso no navegador; não existe chave de API.</dd>
         <dt>Instruções em Markdown</dt><dd><code>https://auth.agateo.com.br/llms.txt</code></dd>
       </dl>
-      <p class="muted">Depois de conectado, chame <code>tools/list</code> para ver as ferramentas disponíveis. Hoje existem <code>system_get_status</code> (versão e módulos do servidor) e <code>system_get_current_user</code> (conta conectada). Finanças e agenda estão em construção.</p>
+      <p class="muted">Depois de conectado, chame <code>tools/list</code> para ver as ferramentas disponíveis. No começo da conversa, chame <code>context_get_summary</code> para saber onde a pessoa parou em qualquer app; salve objetivos, pendências e onde a conversa parou com <code>context_save_note</code>. Também existem <code>system_get_status</code> e <code>system_get_current_user</code>. Finanças e agenda estão em construção.</p>
     </section>
 
     <section class="doc__section" aria-labelledby="problemas">
